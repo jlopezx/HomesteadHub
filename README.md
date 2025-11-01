@@ -1,5 +1,5 @@
 # HomesteadHub: Farm-to-Table E-Commerce Application
-HomesteadHub is a Java application designed to connect local farmers (producers) directly with community residents (consumers) for purchasing fresh, local goods, eliminating the middleman."
+HomesteadHub is a Java application designed to connect local farmers (producers) directly with community residents (consumers) for purchasing fresh, local goods, eliminating the middleman.
 
 **Project uses a Three-Tier Architecture:**
 
