@@ -2,6 +2,7 @@ package edu.sdmesa.homesteadhub;
 
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * Lead Author(s):
  * 
@@ -45,39 +46,47 @@ import java.util.Map;
  */
 public class Cart
 {
-
 	// Cart holds a reference to its owner.
-	private Customer owner;
+	private Customer customer;
 	// Cart owns its LineItems. Key is the Product SKU for quick lookup.
-	private Map<String, LineItem> itemMap = new HashMap<>();
+	private Map<String, LineItem> items;
 
 	/**
 	 * Constructor for Cart.
 	 * 
 	 * @param owner The Customer object that owns this cart.
 	 */
-	public Cart(Customer owner)
+	public Cart(Customer customer)
 	{
-		this.owner = owner;
+		this.customer = customer;
+		this.items = new HashMap<>();
 	}
 
 	/**
-	 * Adds or updates a product in the cart, converting it into a LineItem.
+	 * Adds a product to the cart or updates the quantity if it already exists.
 	 * 
-	 * @param product  The product being added.
+	 * @param product  The product to add.
 	 * @param quantity The quantity to add.
+	 * @return The updated LineItem.
 	 */
-	public void addItemProduct(Product product, int quantity)
+	public LineItem addProduct(Product product, int quantity)
 	{
-		// TODO: For now, we're using a temp placeholder for holding the price
-		// but we eventually want to involve PriceCalculator here.
-		double tempPrice = product.getUnitPrice();
+		String sku = product.getSku();
 
-		// Pass the product, quantity, and price to a new LineItem object
-		LineItem item = new LineItem(product, quantity, tempPrice);
-		
-		// Add LineItem objec to the itemMap to hold it
-		itemMap.put(product.getSku(), item);
+		if (items.containsKey(sku))
+		{
+			// Update existing line item
+			LineItem item = items.get(sku);
+			item.setQuantity(item.getQuantity() + quantity);
+			return item;
+		}
+		else
+		{
+			// Create new line item
+			LineItem newItem = new LineItem(product, quantity);
+			items.put(sku, newItem);
+			return newItem;
+		}
 	}
 
 	/**
@@ -87,7 +96,7 @@ public class Cart
 	 */
 	public void removeItem(String sku)
 	{
-		itemMap.remove(sku);
+		items.remove(sku);
 	}
 
 	/**
@@ -100,7 +109,7 @@ public class Cart
 		double subtotal = 0.0;
 		// Enhanced for loop to iterate through the values of LineItem objects
 		// inside itemMap and adding them all together in subtotal
-		for (LineItem item : itemMap.values())
+		for (LineItem item : items.values())
 		{
 			subtotal += item.calculateLineTotal();
 		}
@@ -108,13 +117,31 @@ public class Cart
 	}
 
 	/**
-	 * Purpose: Getter - Returns itemMap
+	 * Purpose: Clears all items from the cart.
+	 */
+	public void clearCart()
+	{
+		items.clear();
+	}
+
+	/**
+	 * Purpose: Getter - Returns customer
 	 * 
-	 * @return itemMap Map object
+	 * @return customer
+	 */
+	public Customer getCustomer()
+	{
+		return customer;
+	}
+
+	/**
+	 * Purpose: Getter - Returns items
+	 * 
+	 * @return items Map object
 	 */
 	public Map<String, LineItem> getItemMap()
 	{
-		return itemMap;
+		return items;
 	}
 
 }

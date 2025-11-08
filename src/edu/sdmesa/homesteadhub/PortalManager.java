@@ -81,7 +81,7 @@ public class PortalManager
 	 */
 	public void addUser(User user)
 	{
-		userRoster.put(user.getUserName(), user);
+		userRoster.put(user.getUsername(), user);
 	}
 
 	/**

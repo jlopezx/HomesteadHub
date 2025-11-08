@@ -24,3 +24,5 @@ HomesteadHub is a Java application designed to connect local farmers (producers)
 **Current Status:**
 
 >**As of Week 2**, the full Domain Layer has been implemented, and all relationships. The manager classes (PortalManager, InventoryManager) are set up with their required Map Collections.
+
+>**Week 3** - The project now has a working persistent I/O system. The main task was setting up the Persistence Layer, so our system can now remember what users do. Now, when someone creates a customer account, lists a product, or places an order, all that information is safely saved to files.

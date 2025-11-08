@@ -2,6 +2,7 @@ package edu.sdmesa.homesteadhub;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Lead Author(s):
  * 
@@ -43,14 +44,15 @@ import java.util.List;
  * Purpose: The reponsibility of Customer is to represent a Customer in the
  * HomesteadHub system.
  * 
- * Inherits from User and contains customer-specific data, including the Cart and purchase history.
+ * Inherits from User and contains customer-specific data, including the Cart
+ * and purchase history.
  */
 public class Customer extends User
 {
 	// Customer has a cart
 	private Cart cart;
 	// purchaseHistory is a collection that is instantiated and ready to hold data.
-	private List<Order> purchaseHistory = new ArrayList<>();
+	private List<Order> purchaseHistory;
 	// Customer's shipping address
 	private String shippingAddress;
 
@@ -61,18 +63,36 @@ public class Customer extends User
 	 * @param password        The customer's password.
 	 * @param shippingAddress The customer's default shipping address.
 	 */
-	public Customer(String userName, String password, String shippingAddress)
+	public Customer(String username, String password, String email,
+			String shippingAddress)
 	{
 		// Passes required information to the User class through the super
 		// constructor
-		// "Customer" is passed as the user role.
-		super(userName, password, "Customer");
+		super(username, password, email);
 
 		this.shippingAddress = shippingAddress;
 
 		// Composition implementation: The Customer creates its own Cart upon
 		// existence.
 		this.cart = new Cart(this);
+	}
+
+	/**
+	 * Secondary constructor for Customer.
+	 * Mainly used for DESERIALIZATION/LOADING.
+	 * 
+	 * @param userId          The existing user ID.
+	 * @param username        The user's chosen username.
+	 * @param passwordHash    The hashed version of the user's password.
+	 * @param email           The user's contact email.
+	 * @param shippingAddress The default shipping address.
+	 */
+	public Customer(String userId, String username, String password,
+			String email, String shippingAddress)
+	{
+		super(userId, username, password, email);
+		this.shippingAddress = shippingAddress;
+		this.purchaseHistory = new ArrayList<>();
 	}
 
 	/**
@@ -84,7 +104,7 @@ public class Customer extends User
 	public void addProductToCart(Product product, int quantity)
 	{
 		// Calls cart's method to store item in cart
-		cart.addItemProduct(product, quantity);
+		cart.addProduct(product, quantity);
 	}
 
 	/**
@@ -115,6 +135,37 @@ public class Customer extends User
 	public List<Order> getPurchaseHistory()
 	{
 		return purchaseHistory;
+	}
+
+	/**
+	 * Implements the abstract method from User.
+	 * 
+	 * @return The role "Customer".
+	 */
+	@Override
+	public String getRole()
+	{
+		return "Customer";
+	}
+
+	/**
+	 * Purpose: Getter - Returns shippingAddress
+	 *  
+	 * @return shippingAddress
+	 */
+	public String getShippingAddress()
+	{
+		return shippingAddress;
+	}
+
+	/**
+	 * Purpose: Setter - Sets Shipping address
+	 * 
+	 * @param shippingAddress
+	 */
+	public void setShippingAddress(String shippingAddress)
+	{
+		this.shippingAddress = shippingAddress;
 	}
 
 }

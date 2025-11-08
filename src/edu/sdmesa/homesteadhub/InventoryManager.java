@@ -48,14 +48,14 @@ import java.util.Map;
 public class InventoryManager
 {
 	// Map is instantiated and ready to hold Product data. Key is SKU for quick lookup.
-	private Map<String, Product> productCatalog = new HashMap<>();
+	private Map<String, Product> productCatalog;
 
 	/**
 	 * Purpose: no-arg constructor
 	 */
 	public InventoryManager()
 	{
-		// TODO: Wait to initialize this once DataRepository is created.
+		this.productCatalog = new HashMap<>();
 	}
 
 	/**
@@ -66,6 +66,7 @@ public class InventoryManager
 	public void addProduct(Product product)
 	{
 		productCatalog.put(product.getSku(), product);
+		System.out.println("Product added: " + product.getTitle() + " (SKU: " + product.getSku() + ")");
 	}
 
 	/**
@@ -89,6 +90,29 @@ public class InventoryManager
 		}
 		return lowStock;
 	}
+	
+	/**
+     * Retrieves a Product by its unique SKU.
+     * 
+     * @param sku The unique SKU string.
+     * @return The Product object, or null if not found.
+     */
+    public Product getProduct(String sku) 
+    {
+        // Retrieves the Product object (which could be a SimpleProduct or BundleProduct)
+        return this.productCatalog.get(sku);
+    }
+    
+    /**
+     * Removes a Product from the catalog using its SKU.
+     * 
+     * @param sku The unique SKU string of the product to remove.
+     * @return True if the product was removed, false otherwise.
+     */
+    public boolean removeProduct(String sku) 
+    {
+        return this.productCatalog.remove(sku) != null;
+    }
 
 	/**
 	 * Purpose: Getter - Returns productCatalog

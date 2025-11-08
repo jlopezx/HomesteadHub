@@ -1,4 +1,5 @@
 package edu.sdmesa.homesteadhub;
+
 /**
  * Lead Author(s):
  * 
@@ -44,23 +45,21 @@ package edu.sdmesa.homesteadhub;
  */
 public class LineItem
 {
-	
-	private Product product;	// LineItem has-a Product 
-	private int quantity; 		// The amount of product ordered
-	private double finalPrice; 	// Price captured at the time of creation/checkout
+	private Product product; 		// LineItem has-a Product
+	private int quantity; 			// The amount of product ordered
+	private final double unitPrice; // Price captured at the time of creation/checkout
 
 	/**
 	 * Constructor for LineItem.
 	 * 
-	 * @param product    The product object referenced by this line item.
-	 * @param quantity   The amount of the product being ordered.
-	 * @param finalPrice The price calculated at the moment this LineItem is finalized.
+	 * @param product  The Product being added.
+	 * @param quantity The amount of the product.
 	 */
-	public LineItem(Product product, int quantity, double finalPrice)
+	public LineItem(Product product, int quantity)
 	{
 		this.product = product;
 		this.quantity = quantity;
-		this.finalPrice = finalPrice;
+		this.unitPrice = product.calculatePrice();
 	}
 
 	/**
@@ -70,7 +69,12 @@ public class LineItem
 	 */
 	public double calculateLineTotal()
 	{
-		return this.quantity * this.finalPrice;
+		double rawTotal = this.quantity * this.unitPrice;
+		
+        // Rounds a double to 2 decimal places.
+        double roundedTotal = Math.round(rawTotal * 100.0) / 100.0;
+        
+        return roundedTotal;
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class LineItem
 	{
 		return product;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns quantity
 	 * 
@@ -92,14 +96,24 @@ public class LineItem
 	{
 		return quantity;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns finalPrice
 	 * 
 	 * @return finalPrice double variable
 	 */
-	public double getFinalPrice()
+	public double getUnitPrice()
 	{
-		return finalPrice;
+		return unitPrice;
+	}
+
+	/**
+	 * Purpose: Setter - Sets quantity class field
+	 * 
+	 * @param quantity
+	 */
+	public void setQuantity(int quantity)
+	{
+		this.quantity = quantity;
 	}
 }

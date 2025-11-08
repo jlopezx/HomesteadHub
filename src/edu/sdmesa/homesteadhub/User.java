@@ -1,4 +1,7 @@
 package edu.sdmesa.homesteadhub;
+
+import java.util.UUID;
+
 /**
  * Lead Author(s):
  * 
@@ -38,8 +41,7 @@ package edu.sdmesa.homesteadhub;
 
 /**
  * Purpose: The reponsibility of User is to serve as the base class for all
- * users of the
- * HomesteadHub app.
+ * users of the HomesteadHub app.
  *
  * This class establishes common properties and methods for both Farmers and
  * Customers.
@@ -47,22 +49,42 @@ package edu.sdmesa.homesteadhub;
 public abstract class User
 {
 	// Private field variables
-	private String userName; // The user's login identifier
-	private String password; // The user's password
-	private String userRole; // The user's account type
+	private final String userId; // The user's ID
+	private String username; 	 // The user's login identifier
+	private String password; 	 // The user's password
+	private String email;		 // The user's email address
 
 	/**
 	 * Constructor for the User class.
 	 * 
 	 * @param userName The user's unique login identifier.
 	 * @param password The user's password.
-	 * @param userRole The role of the user ("Farmer" or "Customer").
+	 * @param email    The user's contact email.
 	 */
-	public User(String userName, String password, String userRole)
+	public User(String username, String password, String email)
 	{
-		this.userName = userName;
+		this.userId = UUID.randomUUID().toString();
+		this.username = username;
 		this.password = password;
-		this.userRole = userRole;
+		this.email = email;
+	}
+
+	/**
+	 * Protected constructor for the User class.
+	 * Mainly used for DESERIALIZATION/LOADING.
+	 * 
+	 * @param userId   The unique user's system identifier.
+	 * @param username The user's unique login identifier.
+	 * @param password The user's password.
+	 * @param email    The user's contact email.
+	 */
+	protected User(String userId, String username, String password,
+			String email)
+	{
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.email = email;
 	}
 
 	/**
@@ -75,7 +97,7 @@ public abstract class User
 	public boolean authenticate(String inputUser, String inputPass)
 	{
 		// Simple check if userName and password match
-		return this.userName.equals(inputUser)
+		return this.username.equals(inputUser)
 				&& this.password.equals(inputPass);
 	}
 
@@ -84,18 +106,50 @@ public abstract class User
 	 * 
 	 * @return userName - String name of the user
 	 */
-	public String getUserName()
+	public String getUsername()
 	{
-		return userName;
+		return username;
 	}
 
 	/**
-	 * Purpose: Getter - Returns userRole (Farmer or Customer)
+	 * Purpose: Getter - Returns the stored plaintext password.
 	 * 
-	 * @return userRole - String value describing the account type
+	 * TODO: For now, we're storing plaintext for testing and impleneting
+	 * Will look into hashing password later down the road.
+	 * 
+	 * @return password String representing the user's password.
 	 */
-	public String getUserRole()
+	public String getPassword()
 	{
-		return userRole;
+		return password;
 	}
+
+	/**
+	 * Purpose: Getter - Returns the user's unique system ID.
+	 * 
+	 * @return userId - String representing the unique user identifier.
+	 */
+	public String getUserId()
+	{
+		return userId;
+	}
+
+	/**
+	 * Purpose: Getter - Returns email address
+	 * 
+	 * @return email String email address of the user
+	 */
+	public String getEmail()
+	{
+		return email;
+	}
+
+	/**
+	 * Abstract method to be implemented by subclasses (Customer/Farmer) to
+	 * return their specific role.
+	 * 
+	 * @return The role of the user ("Farmer" or "Customer").
+	 */
+	public abstract String getRole();
+
 }

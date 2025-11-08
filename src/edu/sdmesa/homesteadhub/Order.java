@@ -3,6 +3,7 @@ package edu.sdmesa.homesteadhub;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 /**
  * Lead Author(s):
  * 
@@ -45,17 +46,18 @@ import java.util.List;
  */
 public class Order
 {
-	private String orderId;
-	private Date orderDate;
-	private String orderStatus;
-	private double grandTotal;
-
-	// Order owns its LineItems.
-	private List<LineItem> lineItems = new ArrayList<>();
-	// Order owns its Payment record.
-	private Payment payment;
+	private String status;
+	private String shippingAddress;
+	
+	private final String orderId;
+	private final Date orderDate;
+	private final double totalAmount;
+	
 	// Order references the Customer who placed it.
-	private Customer customer;
+	private final Customer customer; 
+	// Order owns its LineItems.
+	private final List<LineItem> lineItems = new ArrayList<>(); 
+
 
 	/**
 	 * Constructor for Order.
@@ -65,18 +67,17 @@ public class Order
 	 * @param payment  The Payment object associated with the order.
 	 * @param items    The list of LineItems from the Cart.
 	 */
-	public Order(String orderId, Customer customer, Payment payment,
-			List<LineItem> items)
+	public Order(String orderId, Customer customer, List<LineItem> items,
+			double totalAmount, String shippingAddress)
 	{
 		this.orderId = orderId;
 		this.customer = customer;
-		this.payment = payment;
 		this.lineItems.addAll(items); // Copying LineItems from the Cart
 		this.orderDate = new Date(); // Keep a time record
-		this.orderStatus = "Placed"; // Initial status
+		this.totalAmount = totalAmount;
+		this.shippingAddress = shippingAddress;
+		this.status = "Placed"; // Initial status
 
-		// Tally up the total
-		this.grandTotal = calculateTaxes() + calculateSubtotal();
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class Order
 	 * 
 	 * @return The subtotal.
 	 */
-	private double calculateSubtotal()
+	public double calculateSubtotal()
 	{
 
 		double subtotal = 0.0;
@@ -99,27 +100,6 @@ public class Order
 	}
 
 	/**
-	 * Calculates the total taxes due for the order.
-	 * 
-	 * @return The calculated tax amount.
-	 */
-	public double calculateTaxes()
-	{
-		// Placeholder implementation for 10% tax, can change this to be a
-		// variable to
-		// make it custom or modular
-		return calculateSubtotal() * 0.10;
-	}
-
-	/**
-	 * Finalizes the order, updates the order status to be final
-	 */
-	public void finalizeOrder()
-	{
-		this.orderStatus = "Finalized";
-	}
-
-	/**
 	 * Purpose: Getter - Returns orderId
 	 * 
 	 * @return orderId String object
@@ -128,25 +108,73 @@ public class Order
 	{
 		return orderId;
 	}
+	
+	/**
+	 * Purpose: Getter - Returns customer
+	 * @return customer Customer object
+	 */
+    public Customer getCustomer() 
+    {
+        return customer;
+    }
+
+    /**
+     * Purpose: Getter - Returns lineItems
+     * 
+     * @return lineItems List<lineItems>
+     */
+    public List<LineItem> getLineItems() 
+    {
+        return lineItems;
+    }
+
+    /**
+     * Purpose: Getter - Returns orderDate
+     * 
+     * @return orderDate Date object
+     */
+    public Date getOrderDate() 
+    {
+        return orderDate;
+    }
 
 	/**
-	 * Purpose: Getter - Returns grandTotal
+	 * Purpose: Getter - Returns totalAmount
 	 * 
-	 * @return grandTotal double variable
+	 * @return totalAmount double variable
 	 */
-	public double getGrandTotal()
+	public double getTotalAmount()
 	{
-		return grandTotal;
+		return totalAmount;
 	}
+	
+	/**
+	 * Purpose: Getter - Returns shippingAddress
+	 * 
+	 * @return shippingAddress String object
+	 */
+    public String getShippingAddress() 
+    {
+        return shippingAddress;
+    }
 
 	/**
 	 * Purpose: Getter - Returns orderStatus
 	 * 
 	 * @return orderStatus String object
 	 */
-	public String getOrderStatus()
+	public String getStatus()
 	{
-		return orderStatus;
+		return status;
+	}
+
+	/**
+	 * Purpose: Setter - Modifies status private field
+	 * @param orderStatus
+	 */
+	public void setStatus(String orderStatus)
+	{
+		this.status = orderStatus;
 	}
 
 }

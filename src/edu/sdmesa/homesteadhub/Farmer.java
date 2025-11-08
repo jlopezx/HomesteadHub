@@ -1,4 +1,8 @@
 package edu.sdmesa.homesteadhub;
+
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Lead Author(s):
  * 
@@ -45,26 +49,47 @@ package edu.sdmesa.homesteadhub;
  */
 public class Farmer extends User
 {
+	// A Farmer contains a List of Products they sell
+	private List<Product> offeredProducts;
 	private String farmName;
-	private double commissionRate;
+	private String location;
 
 	/**
-	 * Constructor for Farmer.
+	 * Constructor for Farmer to create a new Farmer account with a unique ID
 	 * 
-	 * @param userName The farmer's username.
-	 * @param password The farmer's password.
-	 * @param farmName The name of the farmer's operation.
+	 * @param username     The user's chosen username.
+	 * @param password     The passowrd in plaintext (for now).
+	 * @param email        The user's contact email.
+	 * @param farmName     The name of the farmer's operation.
+	 * @param location     The geographic location of the farm.
 	 */
-	public Farmer(String userName, String password, String farmName,
-			double commissionRate)
+	public Farmer(String username, String password, String email,
+			String farmName, String location)
 	{
-		// Passes required information to the User class through the super
-		// constructor
-		// "Farmer" is passed as the user role.
-		super(userName, password, "Farmer");
-		
+		super(username, password, email);
 		this.farmName = farmName;
-		this.commissionRate = commissionRate;
+		this.location = location;
+		this.offeredProducts = new ArrayList<>();
+	}
+
+	/**
+	 * Secondary constructor for Farmer. 
+	 * Mainly used for DESERIALIZATION/LOADING.
+	 * 
+	 * @param userId       The existing user ID.
+	 * @param username     The user's chosen username.
+	 * @param password     The passowrd in plaintext (for now).
+	 * @param email        The user's contact email.
+	 * @param farmName     The name of the farmer's operation.
+	 * @param location     The geographic location of the farm.
+	 */
+	public Farmer(String userId, String username, String password,
+			String email, String farmName, String location)
+	{
+		super(userId, username, password, email);
+		this.farmName = farmName;
+		this.location = location;
+		this.offeredProducts = new ArrayList<>();
 	}
 
 	/**
@@ -74,8 +99,8 @@ public class Farmer extends User
 	 */
 	public void processOrder(Order order)
 	{
-		//TODO: Implement rest of logic when OrderManager is created
-		System.out.println("Farmer " + getUserName() + " processing order: "
+		// TODO: Implement rest of logic when OrderManager is created
+		System.out.println("Farmer " + getUsername() + " processing order: "
 				+ order.getOrderId());
 	}
 
@@ -90,12 +115,74 @@ public class Farmer extends User
 	}
 
 	/**
-	 * Purpose: Getter - Returns commissionRate
-	 * 
-	 * @return commissionRate double variable
+	 * Purpose: Setter - Modifies farmName
+	 * @param farmName
 	 */
-	public double getCommissionRate()
+	public void setFarmName(String farmName)
 	{
-		return commissionRate;
+		this.farmName = farmName;
 	}
+
+	/**
+	 * Implements the abstract method from User.
+	 * 
+	 * @return The role "Farmer".
+	 */
+	@Override
+	public String getRole()
+	{
+		return "Farmer";
+	}
+
+	/**
+	 * Adds a product to the farmer's list of offerings.
+	 * 
+	 * @param product The Product object to add.
+	 */
+	public void addProduct(Product product)
+	{
+		this.offeredProducts.add(product);
+	}
+
+	/**
+	 * Removes a product from the farmer's list of offerings.
+	 * 
+	 * @param product The Product object to remove.
+	 * @return True if the product was successfully removed.
+	 */
+	public boolean removeProduct(Product product)
+	{
+		return this.offeredProducts.remove(product);
+	}
+
+	/**
+	 * Purpose: Getter - Returns location
+	 * 
+	 * @return location
+	 */
+	public String getLocation()
+	{
+		return location;
+	}
+
+	/**
+	 * Purpose: Setter - Modifies the location fields
+	 * 
+	 * @param location
+	 */
+	public void setLocation(String location)
+	{
+		this.location = location;
+	}
+
+	/**
+	 * Purpose: Getter - Returns offeredProducts 
+	 * 
+	 * @return offeredProducts List<Product>
+	 */
+	public List<Product> getOfferedProducts()
+	{
+		return offeredProducts;
+	}
+
 }

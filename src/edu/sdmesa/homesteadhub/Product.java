@@ -1,4 +1,7 @@
 package edu.sdmesa.homesteadhub;
+
+import java.util.UUID;
+
 /**
  * Lead Author(s):
  * 
@@ -37,44 +40,84 @@ package edu.sdmesa.homesteadhub;
  */
 
 /**
- * Purpose: The reponsibility of Product is to represent an item for sale in the catalog.
+ * Purpose: The reponsibility of Product is to represent an item for sale in the
+ * catalog.
  */
-public class Product
+public abstract class Product
 {
-	private String sku;
-	private String title;
-	private double unitPrice;
-	private int stockQuantity;
-	private boolean isBundle;
+	private final String sku; 	// Stock Keeping Unit - unique ID
+	private String title;		// Name of the product
+	private int stockQuantity;	// Amoung of product available for sale
+	private Farmer farmer; 		// Product HAS-A Farmer
+	private double unitPrice;	// Base price of the product
 
 	/**
-	 * Constructor for Product.
+	 * Constructor for Product used when a SKU is provided.
+	 * Mainly used for DESERIALIZATION/LOADING.
 	 * 
-	 * @param sku           Unique identifier for the product.
-	 * @param title         Display name.
-	 * @param unitPrice     Price per unit.
-	 * @param stockQuantity Current stock level.
-	 * @param isBundle      True if this product is composed of other products
+	 * @param sku             The unique product identifier.
+	 * @param title           The display name of the product.
+	 * @param quantityInStock The current inventory count.
+	 * @param supplier        The farmer supplying the product.
+	 * @param unitPrice       The price per unit/item.
 	 */
-	public Product(String sku, String title, double unitPrice,
-			int stockQuantity, boolean isBundle)
+	public Product(String sku, String title, int stockQuantity, Farmer farmer,
+			double unitPrice)
 	{
 		this.sku = sku;
 		this.title = title;
-		this.unitPrice = unitPrice;
 		this.stockQuantity = stockQuantity;
-		this.isBundle = isBundle;
+		this.farmer = farmer;
+		this.unitPrice = unitPrice;
 	}
+	
+	/**
+     * Protected constructor for Product used when a SKU is NOT provided (auto-generates a UUID).
+     * 
+     * @param title The display name of the product.
+     * @param quantityInStock The current inventory count.
+     * @param supplier The farmer supplying the product.
+     * @param unitPrice The price per unit/item.
+     */
+    protected Product(String title, int stockQuantity, Farmer farmer, double unitPrice) {
+        this.sku = UUID.randomUUID().toString();
+        this.title = title;
+        this.stockQuantity = stockQuantity;
+        this.farmer = farmer;
+        this.unitPrice = unitPrice;
+    }
 
 	/**
-	 * Calculates the price based on the quantity of this product.
+	 * Abstract method to calculate the price. Pricing differs for Simple vs
+	 * Bundle products.
 	 * 
-	 * @param quantity The quantity desired.
-	 * @return The simple calculated price.
+	 * @return The final unit price of the product.
 	 */
-	public double calculatePriceForQuantity(int quantity)
+	public abstract double calculatePrice();
+
+	/**
+	 * Abstract method to get a display description, which differs for bundles.
+	 * 
+	 * @return A string representing the product details.
+	 */
+	public abstract String getDetails();
+
+	/**
+	 * Updates the stock quantity, used during sales or restocking.
+	 * 
+	 * @param quantityChange The amount to add or subtract.
+	 * @return True if the update was successful.
+	 */
+	public boolean updateStock(int quantityChange)
 	{
-		return this.unitPrice * quantity;
+		int newQuantity = this.stockQuantity + quantityChange;
+		if (newQuantity < 0)
+		{
+			// Cannot fulfill request because stock would be negative
+			return false;
+		}
+		this.stockQuantity = newQuantity;
+		return true;
 	}
 
 	/**
@@ -98,13 +141,13 @@ public class Product
 	}
 
 	/**
-	 * Purpose: Getter - Returns unitPrice
+	 * Purpose: Setter - Modifies title of class's title field
 	 * 
-	 * @return unitPrice double variable
+	 * @param title
 	 */
-	public double getUnitPrice()
+	public void setTitle(String title)
 	{
-		return unitPrice;
+		this.title = title;
 	}
 
 	/**
@@ -128,22 +171,32 @@ public class Product
 	}
 
 	/**
-	 * Purpose: Getter - Returns isBundle
+	 * Purpose: Getter - Returns farmer
 	 * 
-	 * @return isBundle boolean variable
+	 * @return farmer Farmer object
 	 */
-	public boolean getIsBundle()
+	public Farmer getFarmer()
 	{
-		return isBundle;
+		return farmer;
 	}
 
 	/**
-	 * Purpose: Setter - Modifys isBundle
+	 * Purpose: Getter - Returns unitPrice
 	 * 
-	 * @param isBundle
+	 * @return unitPrice double variable
 	 */
-	public void setIsBundle(boolean isBundle)
+	public double getUnitPrice()
 	{
-		this.isBundle = isBundle;
+		return unitPrice;
+	}
+	
+	/**
+	 * Purpose: Setter - Modifies unitPrice field
+	 * 
+	 * @param unitPrice
+	 */
+	public void setUnitPrice(double unitPrice)
+	{
+		this.unitPrice = unitPrice;
 	}
 }
