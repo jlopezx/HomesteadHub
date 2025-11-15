@@ -6,47 +6,20 @@ package edu.sdmesa.homesteadhub;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
+ * @Purpose The reponsibility of LineItem is to represent a single line entry in
+ *          a Cart or an Order.
  * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of LineItem is to represent a single line entry in
- * a Cart or an Order.
- * 
- * It tracks the specific Product and the quantity ordered.
+ *          It tracks the specific Product and the quantity ordered.
  */
 public class LineItem
 {
-	private Product product; 		// LineItem has-a Product
-	private int quantity; 			// The amount of product ordered
+	private Product product; // LineItem has-a Product
+	private int quantity; // The amount of product ordered
 	private final double unitPrice; // Price captured at the time of creation/checkout
 
 	/**
@@ -70,11 +43,11 @@ public class LineItem
 	public double calculateLineTotal()
 	{
 		double rawTotal = this.quantity * this.unitPrice;
-		
-        // Rounds a double to 2 decimal places.
-        double roundedTotal = Math.round(rawTotal * 100.0) / 100.0;
-        
-        return roundedTotal;
+
+		// Rounds a double to 2 decimal places.
+		double roundedTotal = Math.round(rawTotal * 100.0) / 100.0;
+
+		return roundedTotal;
 	}
 
 	/**

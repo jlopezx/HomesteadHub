@@ -9,49 +9,24 @@ import java.util.List;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
+ * @Purpose The reponsibility of Customer is to represent a Customer in the
+ *          HomesteadHub system.
  * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of Customer is to represent a Customer in the
- * HomesteadHub system.
- * 
- * Inherits from User and contains customer-specific data, including the Cart
- * and purchase history.
+ *          Inherits from User and contains customer-specific data, including
+ *          the Cart
+ *          and purchase history.
  */
 public class Customer extends User
 {
 	// Customer has a cart
 	private Cart cart;
-	// purchaseHistory is a collection that is instantiated and ready to hold data.
+	// purchaseHistory is a collection that is instantiated and ready to hold
+	// data.
 	private List<Order> purchaseHistory;
 	// Customer's shipping address
 	private String shippingAddress;
@@ -150,7 +125,7 @@ public class Customer extends User
 
 	/**
 	 * Purpose: Getter - Returns shippingAddress
-	 *  
+	 * 
 	 * @return shippingAddress
 	 */
 	public String getShippingAddress()

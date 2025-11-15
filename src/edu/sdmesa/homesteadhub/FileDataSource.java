@@ -10,32 +10,19 @@ import java.util.Scanner;
 /**
  * Lead Author(s):
  * 
- * @author Josh; student ID
- * @author Full name; student ID
- *         <<Add additional lead authors here>>
- *
- *         Other Contributors:
- *         Full name; student ID or contact information if not in class
- *         <<Add additional contributors (mentors, tutors, friends) here, with
- *         contact information>>
+ * @author Joshua Lopez
  *
  *         References:
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
+ * 
+ * @version 2025-11-11
+ * 
+ * @Purpose The reponsibility of FileDataSource is Concrete implementation of
+ *          DataRepository that persists data to local text files.
+ *          This class handles all file I/O operations
  *
- *         <<Add more references here>>
- *
- *         Version: 2025-11-03
- */
-
-/**
- * Purpose: The reponsibility of FileDataSource is Concrete implementation of
- * DataRepository that persists data to local text files.
- * This class handles all file I/O operations
- *
- * FileDataSource is-a ...
- * FileDataSource is ...
+ *          FileDataSource is-a DataRepository
  */
 public class FileDataSource implements DataRepository
 {
@@ -47,17 +34,9 @@ public class FileDataSource implements DataRepository
 	private Helper helper = new Helper();
 
 	/**
-	 * Purpose: No-args constructor
+	 * Purpose: Constructor to create data files
 	 */
 	public FileDataSource()
-	{
-	}
-
-	/**
-	 * Purpose: 
-	 * @param finalFilePath
-	 */
-	public FileDataSource(String finalFilePath)
 	{
 		try
 		{
@@ -72,7 +51,6 @@ public class FileDataSource implements DataRepository
 		}
 	}
 
-	
 	@Override
 	public User saveUser(User user)
 	{

@@ -4,46 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Lead Author(s):
  * 
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
- * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of InventoryManager is to manage the entire
- * Product catalog and inventory levels.
+ * @Purpose The reponsibility of InventoryManager is to manage the entire
+ *          Product catalog and inventory levels.
  */
 public class InventoryManager
 {
@@ -66,7 +40,8 @@ public class InventoryManager
 	public void addProduct(Product product)
 	{
 		productCatalog.put(product.getSku(), product);
-		System.out.println("Product added: " + product.getTitle() + " (SKU: " + product.getSku() + ")");
+		System.out.println("Product added: " + product.getTitle() + " (SKU: "
+				+ product.getSku() + ")");
 	}
 
 	/**
@@ -90,29 +65,30 @@ public class InventoryManager
 		}
 		return lowStock;
 	}
-	
+
 	/**
-     * Retrieves a Product by its unique SKU.
-     * 
-     * @param sku The unique SKU string.
-     * @return The Product object, or null if not found.
-     */
-    public Product getProduct(String sku) 
-    {
-        // Retrieves the Product object (which could be a SimpleProduct or BundleProduct)
-        return this.productCatalog.get(sku);
-    }
-    
-    /**
-     * Removes a Product from the catalog using its SKU.
-     * 
-     * @param sku The unique SKU string of the product to remove.
-     * @return True if the product was removed, false otherwise.
-     */
-    public boolean removeProduct(String sku) 
-    {
-        return this.productCatalog.remove(sku) != null;
-    }
+	 * Retrieves a Product by its unique SKU.
+	 * 
+	 * @param sku The unique SKU string.
+	 * @return The Product object, or null if not found.
+	 */
+	public Product getProduct(String sku)
+	{
+		// Retrieves the Product object (which could be a SimpleProduct or
+		// BundleProduct)
+		return this.productCatalog.get(sku);
+	}
+
+	/**
+	 * Removes a Product from the catalog using its SKU.
+	 * 
+	 * @param sku The unique SKU string of the product to remove.
+	 * @return True if the product was removed, false otherwise.
+	 */
+	public boolean removeProduct(String sku)
+	{
+		return this.productCatalog.remove(sku) != null;
+	}
 
 	/**
 	 * Purpose: Getter - Returns productCatalog

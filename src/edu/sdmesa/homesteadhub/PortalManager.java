@@ -9,75 +9,64 @@ import java.util.Map;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
- * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of PortalManager is to manage user sessions,
- * authenticate, and act as the FarmMarketService API entry point.
+ * @Purpose The reponsibility of PortalManager is to manage user sessions,
+ *          authenticate, and act as the FarmMarketService API entry point.
  */
 public class PortalManager
 {
 	// Map is instantiated and ready to hold User data. Key is userName.
-	private Map<String, User> userRoster = new HashMap<>();
+	private Map<String, User> userRoster;
 
-	// TODO: Will decide how to initialize after DataRepository is created.
 	public PortalManager()
 	{
+		// Initializes the user roster map
+		userRoster = new HashMap<>();
 	}
 
 	/**
-	 * Placeholder for the login method.
+	 * Purpose: Authenticates a user based on the provided username and password
+	 *
+	 *
+	 * @throws UserNotFoundException       if the username is not found
+	 * @throws InvalidCredentialsException if the password does not match
 	 * 
-	 * @param userName The username to check.
-	 * @param password The password to check.
-	 * @return The authenticated User object or null.
+	 * @param username The username provided by the user
+	 * @param password The password provided by the user
+	 * 
+	 * @return The authenticated User object
 	 */
-	public User login(String userName, String password)
+	public User login(String username, String password)
+			throws UserNotFoundException, InvalidCredentialsException
 	{
 		// Searches for our user in our userRoster (user database)
-		User user = userRoster.get(userName);
-		// Check if our user is valid and authenticated
-		if (user != null && user.authenticate(userName, password))
+		User user = userRoster.get(username);
+
+		// Check if user exists (UserNotFoundException)
+		if (user == null)
 		{
-			// Returns the user if it is valid and userName/password combo match
-			return user;
+			throw new UserNotFoundException(username);
 		}
-		return null;
+
+		// Check if password matches (InvalidCredentialsException)
+		if (!user.getPassword().equals(password))
+		{
+			throw new InvalidCredentialsException();
+		}
+
+		// Returns the user if it is valid and userName/password combo match
+		return user;
+
 	}
 
 	/**
-	 * Adds a user to the roster.
+	 * Adds a user to the roster
 	 * 
-	 * @param user The user object to add.
+	 * @param user The user object to add
 	 */
 	public void addUser(User user)
 	{

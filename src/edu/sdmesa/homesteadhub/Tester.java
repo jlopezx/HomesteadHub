@@ -11,40 +11,13 @@ import java.util.List;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
- * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of Tetser is to test classes from our HomesteadHub
- * project.
+ * @Purpose The reponsibility of Tetser is to test classes from our HomesteadHub
+ *          project.
  */
 public class Tester
 {
@@ -83,22 +56,31 @@ public class Tester
 		System.out.println("\nProduct added to Catalog: " + inventoryManager
 				.getProductCatalog().get("APPLE1").getTitle());
 
-		// -----------------------Testing Login Functionality----------------------
+		// ----------------Testing Login Functionality-------------------
 		System.out.println("\n-----Testing Login Functionality-----");
-		User loggedInUser = portalManager.login("Josh", "1234");
-		if (loggedInUser != null)
+		User loggedInUser = null;
+		try
 		{
-			System.out.println(
-					"LOGIN SUCCESS: User " + loggedInUser.getUsername() + " ("
-							+ loggedInUser.getRole() + ") authenticated.");
+			loggedInUser = portalManager.login("Josh", "1234");
+			if (loggedInUser != null)
+			{
+				System.out.println("LOGIN SUCCESS: User "
+						+ loggedInUser.getUsername() + " ("
+						+ loggedInUser.getRole() + ") authenticated.");
+			}
+			else
+			{
+				System.out.println("LOGIN FAILED.");
+				return;
+			}
 		}
-		else
+		catch (UserNotFoundException | InvalidCredentialsException e)
 		{
-			System.out.println("LOGIN FAILED.");
-			return;
+			// Report invalid username or password
+			System.err.println("WEEK 2 login test FAILED: " + e);
 		}
 
-		// -----------------------Testing Customer/Cart Relationship-----------------
+		// -------------Testing Customer/Cart Relationship---------------
 		System.out.println("\n-----Testing Customer/Cart Relationship-----");
 		if (loggedInUser instanceof Customer)
 		{
@@ -122,6 +104,10 @@ public class Tester
 				System.out.println(
 						"Line Item Total: $" + item.calculateLineTotal());
 			}
+			else
+			{
+				System.err.println("TEST FAILED: Item does not exist.");
+			}
 
 			// Test Cart subtotal
 			double subtotal = loggedInCustomer.getCart().calculateSubtotal();
@@ -135,44 +121,56 @@ public class Tester
 			}
 			else
 			{
-				System.out.println("TEST FAILED: Subtotal is incorrect.");
+				System.err.println("TEST FAILED: Subtotal is incorrect.");
 			}
+		}
+		else
+		{
+			System.err.println("FAIL: loggedInUser no a Customer object.");
 		}
 
 		System.out.println("\n##### Week 2 Testing Complete #####");
 
 		System.out.println("\n##### HomesteadHub Week 3 Tests #####");
-		Tester tester = new Tester();
-		tester.setup(farmer, customer);
-		tester.testUserPersistence(farmer, customer);
-		tester.testProductPersistence(farmer);
-		tester.testOrderPersistence(customer);
-
+		setup(farmer, customer);
+		testUserPersistence(farmer, customer);
+		testProductPersistence(farmer);
+		testOrderPersistence(customer);
 		System.out.println("\n##### Week 3 Testing Complete #####");
+
+		System.out.println("\n##### Week 4 Testing Start #####");
+		testLoginExceptions(portalManager);
+		System.out.println("\n##### Week 4 Testing Complete #####");
+
+		// TODO: Week 5 FarmMarketService farmService = new
+		// testProcessPayment();
 	}
 
-	private final DataRepository repository = new FileDataSource();
+	private final static DataRepository repository = new FileDataSource();
 
-	private SimpleProduct testProduct;
-	private Order testOrder;
+	private static SimpleProduct testProduct;
+	private static Order testOrder;
 
 	/**
-	 * Purpose: Setup method to initialize the environment and create mock objects.
+	 * Purpose: Setup method to initialize the environment and create mock
+	 * objects.
 	 * 
 	 * @param farmer
 	 * @param customer
 	 */
-	public void setup(Farmer farmer, Customer customer)
+	public static void setup(Farmer farmer, Customer customer)
 	{
 		// Clean directory
 		new File("users.txt").delete();
 		new File("products.txt").delete();
 		new File("orders.txt").delete();
 
-		// Testing new SimpleProduct class. Creates new product based on the farmer
+		// Testing new SimpleProduct class. Creates new product based on the
+		// farmer
 		testProduct = new SimpleProduct("Carrots", 50, farmer, 3.99);
 
-		// Adds a product to a LineItem list to simulate a listed item a customer can buy
+		// Adds a product to a LineItem list to simulate a listed item a
+		// customer can buy
 		List<LineItem> items = new ArrayList<>();
 		items.add(new LineItem(testProduct, 5));
 
@@ -191,7 +189,7 @@ public class Tester
 	 * @param farmer
 	 * @param customer
 	 */
-	public void testUserPersistence(Farmer farmer, Customer customer)
+	public static void testUserPersistence(Farmer farmer, Customer customer)
 	{
 		// Save the User
 		repository.saveUser(customer);
@@ -250,7 +248,7 @@ public class Tester
 	 * 
 	 * @param farmer
 	 */
-	public void testProductPersistence(Farmer farmer)
+	public static void testProductPersistence(Farmer farmer)
 	{
 		// Save the Product
 		repository.saveProduct(testProduct);
@@ -277,7 +275,7 @@ public class Tester
 	 * 
 	 * @param customer
 	 */
-	public void testOrderPersistence(Customer customer)
+	public static void testOrderPersistence(Customer customer)
 	{
 		// Save the Order
 		repository.saveOrder(testOrder);
@@ -300,8 +298,7 @@ public class Tester
 		}
 
 		// Find Orders by Customer
-		List<Order> customerOrders = repository
-				.findOrdersByCustomer(customer);
+		List<Order> customerOrders = repository.findOrdersByCustomer(customer);
 		if (customerOrders.size() >= 1)
 		{
 			System.out.println("PASS: Found " + customerOrders.size()
@@ -313,5 +310,88 @@ public class Tester
 					"FAIL: Expected at least 1 order for the customer.");
 		}
 
+	}
+
+	/**
+	 * Purpose: Tests the PortalManager login method to check if it correctly
+	 * throws UserNotFoundException and InvalidCredentialsException.
+	 * 
+	 * @param portalManager The initialized PortalManager instance.
+	 */
+	public static void testLoginExceptions(PortalManager portalManager)
+	{
+		System.out.println("\n--- Testing Login Exceptions ---");
+		final String unknownUser = "UnknownPerson";
+		final String knownUser = "Josh";
+		final String wrongPass = "wrongpassword";
+
+		// Test case: User Not Found (UserNotFoundException)
+		System.out.println(
+				"\nUserNotFoundException Test Case: Unknown User Login...");
+		try
+		{
+			portalManager.login(unknownUser, "anypass");
+			System.err.println(
+					"FAIL: Expected UserNotFoundException but login succeeded.");
+		}
+		catch (UserNotFoundException e)
+		{
+			System.out.println(
+					"PASS: Caught expected exception: " + e.getMessage());
+		}
+		catch (InvalidCredentialsException e)
+		{
+			System.err.println(
+					"FAIL: Expected UserNotFoundException but caught InvalidCredentialsException.");
+		}
+
+		// Test case: Invalid Password (InvalidCredentialsException)
+		System.out.println(
+				"\nInvalidCredentialsException Test Case: Known User, Wrong Password...");
+		try
+		{
+			portalManager.login(knownUser, wrongPass);
+			System.err.println(
+					"FAIL: Expected InvalidCredentialsException but login succeeded.");
+		}
+		catch (InvalidCredentialsException e)
+		{
+			System.out.println(
+					"PASS: Caught expected exception: " + e.getMessage());
+		}
+		catch (UserNotFoundException e)
+		{
+			System.err.println(
+					"FAIL: Expected InvalidCredentialsException but caught UserNotFoundException.");
+		}
+	}
+
+	/**
+	 * Purpose: Tests the FarmMarketService's payment processing method.
+	 * TODO: Week 5 testing method. Need PendingPickupCheckout
+	 * 
+	 * @param marketService The service instance to test.
+	 */
+	public static void testProcessPayment(FarmMarketService marketService)
+	{
+		System.out.println(
+				"\n--- Testing Payment Processing with FarmMarketService ---");
+
+		double testAmount = 31.40;
+		PaymentDetail paymentDetails = new PickupDetail();
+
+		PaymentResult result = marketService.processPayment(testAmount,
+				paymentDetails);
+
+		if (result != null && result.isSuccess())
+		{
+			System.out.println("PASS: Payment processing successful. Status: "
+					+ result.isSuccess() + ", ID: "
+					+ result.getConfirmationId());
+		}
+		else
+		{
+			System.err.println("FAIL: Payment processing failed.");
+		}
 	}
 }

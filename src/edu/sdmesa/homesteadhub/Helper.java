@@ -5,29 +5,17 @@ import java.util.ArrayList;
 /**
  * Lead Author(s):
  * 
- * @author Josh; student ID
- * @author Full name; student ID
- *         <<Add additional lead authors here>>
- *
- *         Other Contributors:
- *         Full name; student ID or contact information if not in class
- *         <<Add additional contributors (mentors, tutors, friends) here, with
- *         contact information>>
+ * @author Joshua Lopez
  *
  *         References:
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *
- *         <<Add more references here>>
- *
- *         Version: 2025-11-07
- */
-
-/**
- * Purpose: The reponsibility of Helper is to provid helper methods for
- * converting domain objects (User, Product, Order) to and from their 
- * storable string format. 
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
+ * 
+ * @version 2025-11-11
+ * 
+ * @Purpose The reponsibility of Helper is to provid helper methods for
+ *          converting domain objects (User, Product, Order) to and from their
+ *          storable string format.
  */
 public class Helper
 {
@@ -37,7 +25,8 @@ public class Helper
 	public String serializeUser(User user)
 	{
 		String role = user.getRole();
-		// userId is kept in the serialized string because Product and Order depend on it.
+		// userId is kept in the serialized string because Product and Order
+		// depend on it.
 		String base = String.format("%s,%s,%s,%s,%s", role, user.getUserId(),
 				user.getUsername(), user.getPassword(), user.getEmail());
 
@@ -61,7 +50,8 @@ public class Helper
 	public User deserializeUser(String data)
 	{
 		String[] parts = data.split(",");
-		// Provides a layer of security to make sure we're not reading from an invalid line 
+		// Provides a layer of security to make sure we're not reading from an
+		// invalid line
 		if (parts.length < 5) return null;
 
 		String role = parts[0];
@@ -104,7 +94,7 @@ public class Helper
 
 	// TODO: Implement serialization and deserialization for BundleProduct
 	// (Requires recursion)
-	
+
 	/**
 	 * Converts a storable string format back into a Product object to
 	 * reconstruct it in memory.
@@ -112,7 +102,8 @@ public class Helper
 	public Product deserializeProduct(String data, Farmer farmer)
 	{
 		String[] parts = data.split(",");
-		// Provides a layer of security to make sure we're not reading from an invalid line 
+		// Provides a layer of security to make sure we're not reading from an
+		// invalid line
 		if (parts.length < 6) return null;
 
 		String type = parts[0];
@@ -145,14 +136,15 @@ public class Helper
 	/**
 	 * Purpose: Converts a storable string format back into an Order object.
 	 * 
-	 * @param data 
+	 * @param data
 	 * @param customer
-	 * @return Order object with 
+	 * @return Order object with
 	 */
 	public Order deserializeOrder(String data, Customer customer)
 	{
 		String[] parts = data.split(",");
-		// Provides a layer of security to make sure we're not reading from an invalid line 
+		// Provides a layer of security to make sure we're not reading from an
+		// invalid line
 		if (parts.length < 4) return null;
 
 		String orderId = parts[0];

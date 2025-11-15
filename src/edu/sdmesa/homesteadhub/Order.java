@@ -10,54 +10,26 @@ import java.util.List;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
- * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
- * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of Order is to represent a placed Order.
+ * @version 2025-11-11
+ *
+ * @Purpose The reponsibility of Order is to represent a placed Order.
  */
 public class Order
 {
 	private String status;
 	private String shippingAddress;
-	
+
 	private final String orderId;
 	private final Date orderDate;
 	private final double totalAmount;
-	
-	// Order references the Customer who placed it.
-	private final Customer customer; 
-	// Order owns its LineItems.
-	private final List<LineItem> lineItems = new ArrayList<>(); 
 
+	// Order references the Customer who placed it.
+	private final Customer customer;
+	// Order owns its LineItems.
+	private final List<LineItem> lineItems = new ArrayList<>();
 
 	/**
 	 * Constructor for Order.
@@ -108,35 +80,36 @@ public class Order
 	{
 		return orderId;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns customer
+	 * 
 	 * @return customer Customer object
 	 */
-    public Customer getCustomer() 
-    {
-        return customer;
-    }
+	public Customer getCustomer()
+	{
+		return customer;
+	}
 
-    /**
-     * Purpose: Getter - Returns lineItems
-     * 
-     * @return lineItems List<lineItems>
-     */
-    public List<LineItem> getLineItems() 
-    {
-        return lineItems;
-    }
+	/**
+	 * Purpose: Getter - Returns lineItems
+	 * 
+	 * @return lineItems List<lineItems>
+	 */
+	public List<LineItem> getLineItems()
+	{
+		return lineItems;
+	}
 
-    /**
-     * Purpose: Getter - Returns orderDate
-     * 
-     * @return orderDate Date object
-     */
-    public Date getOrderDate() 
-    {
-        return orderDate;
-    }
+	/**
+	 * Purpose: Getter - Returns orderDate
+	 * 
+	 * @return orderDate Date object
+	 */
+	public Date getOrderDate()
+	{
+		return orderDate;
+	}
 
 	/**
 	 * Purpose: Getter - Returns totalAmount
@@ -147,16 +120,16 @@ public class Order
 	{
 		return totalAmount;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns shippingAddress
 	 * 
 	 * @return shippingAddress String object
 	 */
-    public String getShippingAddress() 
-    {
-        return shippingAddress;
-    }
+	public String getShippingAddress()
+	{
+		return shippingAddress;
+	}
 
 	/**
 	 * Purpose: Getter - Returns orderStatus
@@ -170,6 +143,7 @@ public class Order
 
 	/**
 	 * Purpose: Setter - Modifies status private field
+	 * 
 	 * @param orderStatus
 	 */
 	public void setStatus(String orderStatus)

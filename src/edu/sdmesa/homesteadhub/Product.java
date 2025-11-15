@@ -8,48 +8,21 @@ import java.util.UUID;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
- * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of Product is to represent an item for sale in the
- * catalog.
+ * @Purpose The reponsibility of Product is to represent an item for sale in the
+ *          catalog.
  */
 public abstract class Product
 {
-	private final String sku; 	// Stock Keeping Unit - unique ID
-	private String title;		// Name of the product
-	private int stockQuantity;	// Amoung of product available for sale
-	private Farmer farmer; 		// Product HAS-A Farmer
-	private double unitPrice;	// Base price of the product
+	private final String sku; // Stock Keeping Unit - unique ID
+	private String title; // Name of the product
+	private int stockQuantity; // Amoung of product available for sale
+	private Farmer farmer; // Product HAS-A Farmer
+	private double unitPrice; // Base price of the product
 
 	/**
 	 * Constructor for Product used when a SKU is provided.
@@ -70,22 +43,25 @@ public abstract class Product
 		this.farmer = farmer;
 		this.unitPrice = unitPrice;
 	}
-	
+
 	/**
-     * Protected constructor for Product used when a SKU is NOT provided (auto-generates a UUID).
-     * 
-     * @param title The display name of the product.
-     * @param quantityInStock The current inventory count.
-     * @param supplier The farmer supplying the product.
-     * @param unitPrice The price per unit/item.
-     */
-    protected Product(String title, int stockQuantity, Farmer farmer, double unitPrice) {
-        this.sku = UUID.randomUUID().toString();
-        this.title = title;
-        this.stockQuantity = stockQuantity;
-        this.farmer = farmer;
-        this.unitPrice = unitPrice;
-    }
+	 * Protected constructor for Product used when a SKU is NOT provided
+	 * (auto-generates a UUID).
+	 * 
+	 * @param title           The display name of the product.
+	 * @param quantityInStock The current inventory count.
+	 * @param supplier        The farmer supplying the product.
+	 * @param unitPrice       The price per unit/item.
+	 */
+	protected Product(String title, int stockQuantity, Farmer farmer,
+			double unitPrice)
+	{
+		this.sku = UUID.randomUUID().toString();
+		this.title = title;
+		this.stockQuantity = stockQuantity;
+		this.farmer = farmer;
+		this.unitPrice = unitPrice;
+	}
 
 	/**
 	 * Abstract method to calculate the price. Pricing differs for Simple vs
@@ -189,7 +165,7 @@ public abstract class Product
 	{
 		return unitPrice;
 	}
-	
+
 	/**
 	 * Purpose: Setter - Modifies unitPrice field
 	 * 

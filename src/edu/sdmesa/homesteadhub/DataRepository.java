@@ -1,32 +1,21 @@
 package edu.sdmesa.homesteadhub;
 
 import java.util.List;
+
 /**
  * Lead Author(s):
  * 
- * @author Josh; student ID
- * @author Full name; student ID
- *         <<Add additional lead authors here>>
- *
- *         Other Contributors:
- *         Full name; student ID or contact information if not in class
- *         <<Add additional contributors (mentors, tutors, friends) here, with
- *         contact information>>
+ * @author Joshua Lopez
  *
  *         References:
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *
- *         <<Add more references here>>
- *
- *         Version: 2025-11-03
- */
-
-/**
- * This interface sets the rules for all data persistence operations.
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- * It separates the Service layer from the database technology used.
+ * @version 2025-11-11
+ * 
+ * @Purpose This interface sets the rules for all data persistence operations.
+ * 
+ *          It separates the Service layer from the database technology used.
  */
 public interface DataRepository
 {

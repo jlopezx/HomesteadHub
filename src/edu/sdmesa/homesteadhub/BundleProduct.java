@@ -6,31 +6,18 @@ import java.util.List;
 /**
  * Lead Author(s):
  * 
- * @author Josh; student ID
- * @author Full name; student ID
- *         <<Add additional lead authors here>>
- *
- *         Other Contributors:
- *         Full name; student ID or contact information if not in class
- *         <<Add additional contributors (mentors, tutors, friends) here, with
- *         contact information>>
+ * @author Joshua Lopez
  *
  *         References:
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *
- *         <<Add more references here>>
- *
- *         Version: 2025-11-06
- */
-
-/**
- * /**
- * Represents a complex product bundle such as a "Weekly Veggie Box" which will
- * be composed of other Products.
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- * Demonstrates composition and the application of recursion.
+ * @version 2025-11-11
+ * 
+ * @Purpose Represents a complex product bundle such as a "Weekly Veggie Box"
+ *          which will be composed of other Products.
+ * 
+ *          Demonstrates composition and the application of recursion.
  */
 public class BundleProduct extends Product
 {

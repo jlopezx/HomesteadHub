@@ -9,43 +9,17 @@ import java.util.ArrayList;
  * @author Joshua Lopez
  *
  *         References:
- *         GeeksforGeeks. (2025).
- *         What is Java Enterprise Edition (Java EE)?
- *         https://www.geeksforgeeks.org/java/java-enterprise-edition/
+ *         All detailed citations are located in the central REFERENCES.md
+ *         file at the project root.
  * 
- *         GeeksforGeeks. (2023).
- *         E-commerce Architecture | System Design for E-commerce Website
- *         https://www.geeksforgeeks.org/system-design/e-commerce-architecture-system-design-for-e-commerce-website/
+ * @version 2025-11-11
  * 
- *         GeeksforGeeks. (2025).
- *         Inventory Management System in Java
- *         https://www.geeksforgeeks.org/java/inventory-management-system-in-java/
+ * @Purpose The reponsibility of Farmer is to represents a Farmer in the
+ *          HomesteadHub system.
  * 
- *         Java Architecture: Components with Examples. (2025).
- *         Java Architecture: Components with Examples
- *         https://vfunction.com/blog/java-architecture/
- * 
- *         Mahmoud. (2024).
- *         Building a Simple E-Commerce Ordering System in Java Using OOP
- *         https://techwithmahmoud.medium.com/building-a-simple-e-commerce-ordering-system-in-java-using-oop-00f051f4825e
- * 
- *         Morelli, R., & Walde, R. (2016).
- *         Java, Java, Java: Object-Oriented Problem Solving
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- *         Stack Overflow. (2020).
- *         How should I design an E-commerce Class Diagram?
- *         https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram
- * 
- *         Version: 2025-10-30
- */
-
-/**
- * Purpose: The reponsibility of Farmer is to represents a Farmer in the
- * HomesteadHub system.
- * 
- * Inherits from User and contains farmer-specific properties like the farm
- * name.
+ *          Inherits from User and contains farmer-specific properties like the
+ *          farm
+ *          name.
  */
 public class Farmer extends User
 {
@@ -57,11 +31,11 @@ public class Farmer extends User
 	/**
 	 * Constructor for Farmer to create a new Farmer account with a unique ID
 	 * 
-	 * @param username     The user's chosen username.
-	 * @param password     The passowrd in plaintext (for now).
-	 * @param email        The user's contact email.
-	 * @param farmName     The name of the farmer's operation.
-	 * @param location     The geographic location of the farm.
+	 * @param username The user's chosen username.
+	 * @param password The passowrd in plaintext (for now).
+	 * @param email    The user's contact email.
+	 * @param farmName The name of the farmer's operation.
+	 * @param location The geographic location of the farm.
 	 */
 	public Farmer(String username, String password, String email,
 			String farmName, String location)
@@ -73,18 +47,18 @@ public class Farmer extends User
 	}
 
 	/**
-	 * Secondary constructor for Farmer. 
+	 * Secondary constructor for Farmer.
 	 * Mainly used for DESERIALIZATION/LOADING.
 	 * 
-	 * @param userId       The existing user ID.
-	 * @param username     The user's chosen username.
-	 * @param password     The passowrd in plaintext (for now).
-	 * @param email        The user's contact email.
-	 * @param farmName     The name of the farmer's operation.
-	 * @param location     The geographic location of the farm.
+	 * @param userId   The existing user ID.
+	 * @param username The user's chosen username.
+	 * @param password The passowrd in plaintext (for now).
+	 * @param email    The user's contact email.
+	 * @param farmName The name of the farmer's operation.
+	 * @param location The geographic location of the farm.
 	 */
-	public Farmer(String userId, String username, String password,
-			String email, String farmName, String location)
+	public Farmer(String userId, String username, String password, String email,
+			String farmName, String location)
 	{
 		super(userId, username, password, email);
 		this.farmName = farmName;
@@ -116,6 +90,7 @@ public class Farmer extends User
 
 	/**
 	 * Purpose: Setter - Modifies farmName
+	 * 
 	 * @param farmName
 	 */
 	public void setFarmName(String farmName)
@@ -176,7 +151,7 @@ public class Farmer extends User
 	}
 
 	/**
-	 * Purpose: Getter - Returns offeredProducts 
+	 * Purpose: Getter - Returns offeredProducts
 	 * 
 	 * @return offeredProducts List<Product>
 	 */
