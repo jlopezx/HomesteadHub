@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of Helper is to provid helper methods for
  *          converting domain objects (User, Product, Order) to and from their
@@ -85,8 +85,8 @@ public class Helper
 		if (product instanceof SimpleProduct)
 		{
 			SimpleProduct sp = (SimpleProduct) product;
-			return String.format("SIMPLE,%s,%s,%d,%.2f,%s", sp.getSku(),
-					sp.getTitle(), sp.getStockQuantity(), sp.calculatePrice(),
+			return String.format("SIMPLE,%s,%s,%s,%d,%.2f,%s", sp.getSku(),
+					sp.getTitle(), sp.getDescription(), sp.getStockQuantity(), sp.calculatePrice(),
 					sp.getFarmer().getUserId());
 		}
 		return null;
@@ -104,17 +104,18 @@ public class Helper
 		String[] parts = data.split(",");
 		// Provides a layer of security to make sure we're not reading from an
 		// invalid line
-		if (parts.length < 6) return null;
+		if (parts.length < 8) return null;
 
 		String type = parts[0];
 		String sku = parts[1];
 		String title = parts[2];
+		String description = parts[3];
 		int stock = Integer.parseInt(parts[3]);
 		double price = Double.parseDouble(parts[4]);
 		// parts[5] is the Farmer ID. Not needed right now
 		if (type.equals("SIMPLE"))
 		{
-			return new SimpleProduct(sku, title, stock, farmer, price);
+			return new SimpleProduct(sku, title, description, stock, farmer, price);
 		}
 		return null;
 	}

@@ -11,7 +11,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of User is to serve as the base class for all
  *          users of the HomesteadHub app.

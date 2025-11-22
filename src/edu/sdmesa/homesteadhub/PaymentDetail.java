@@ -10,14 +10,44 @@ package edu.sdmesa.homesteadhub;
  *         file at the project root.
  * 
  * @version 2025-11-11
- *     
- * @Purpose The reponsibility of PaymentDetail is ...
  * 
- *           PaymentDetail is-a ...
- *           PaymentDetail is ...
+ * @Purpose The reponsibility of PaymentDetail is to transfer data for payment
+ *          information provided
+ *          by the customer to initiate a transaction. This is the INPUT data.
  */
-public interface PaymentDetail
+public class PaymentDetail
 {
-	// TODO: Defines the payment details a customer will provide. It's an
-	// interface to serve as a base for polymorphism
+	private final String paymentMethod;
+	private final String paymentToken;
+	private final String customerName;
+
+	// Test constructor
+	public PaymentDetail(String method)
+	{
+		this.paymentMethod = method;
+		this.paymentToken = "";
+		this.customerName = "";
+	}
+
+	public PaymentDetail(Payment payment, Customer customer)
+	{
+		this.paymentMethod = payment.getPaymentMethod();
+		this.paymentToken = payment.getTransactionId();
+		this.customerName = customer.getName();
+	}
+
+	public String getPaymentMethod()
+	{
+		return paymentMethod;
+	}
+
+	public String getPaymentToken()
+	{
+		return paymentToken;
+	}
+
+	public String getCustomerName()
+	{
+		return customerName;
+	}
 }

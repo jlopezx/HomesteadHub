@@ -11,7 +11,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose This interface sets the rules for all data persistence operations.
  * 

@@ -1,4 +1,5 @@
 package edu.sdmesa.homesteadhub;
+
 /**
  * Lead Author(s):
  * 
@@ -8,12 +9,12 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of SimpleProduct is ...
  *
- * SimpleProduct is-a ...
- * SimpleProduct is ...
+ *          SimpleProduct is-a ...
+ *          SimpleProduct is ...
  */
 public class SimpleProduct extends Product
 {
@@ -27,11 +28,11 @@ public class SimpleProduct extends Product
 	 * @param supplier     The farmer supplying the product.
 	 * @param price        The price per unit/item.
 	 */
-	public SimpleProduct(String sku, String title, int initialStock,
+	public SimpleProduct(String sku, String title, String description, int initialStock,
 			Farmer supplier, double price)
 	{
 
-		super(sku, title, initialStock, supplier, price);
+		super(sku, title, description, initialStock, supplier, price);
 	}
 
 	/**
@@ -60,11 +61,5 @@ public class SimpleProduct extends Product
 		return getUnitPrice();
 	}
 
-	@Override
-	public String getDetails()
-	{
-		// TODO Implement this later
-		return null;
-	}
 
 }

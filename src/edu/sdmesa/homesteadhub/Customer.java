@@ -12,7 +12,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of Customer is to represent a Customer in the
  *          HomesteadHub system.
@@ -30,6 +30,7 @@ public class Customer extends User
 	private List<Order> purchaseHistory;
 	// Customer's shipping address
 	private String shippingAddress;
+	private String name;
 
 	/**
 	 * Constructor for Customer.
@@ -141,6 +142,11 @@ public class Customer extends User
 	public void setShippingAddress(String shippingAddress)
 	{
 		this.shippingAddress = shippingAddress;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 
 }

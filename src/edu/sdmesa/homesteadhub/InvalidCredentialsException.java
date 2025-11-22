@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose Custom exception thrown when a user is found, but the provided
  *          password does not match the stored credentials.

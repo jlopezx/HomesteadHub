@@ -12,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of PortalManager is to manage user sessions,
  *          authenticate, and act as the FarmMarketService API entry point.

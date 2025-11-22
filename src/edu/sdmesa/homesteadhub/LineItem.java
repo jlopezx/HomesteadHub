@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of LineItem is to represent a single line entry in
  *          a Cart or an Order.
@@ -32,7 +32,7 @@ public class LineItem
 	{
 		this.product = product;
 		this.quantity = quantity;
-		this.unitPrice = product.calculatePrice();
+		this.unitPrice = product.getUnitPrice();
 	}
 
 	/**
@@ -88,5 +88,10 @@ public class LineItem
 	public void setQuantity(int quantity)
 	{
 		this.quantity = quantity;
+	}
+	
+	public String getSku()
+	{
+		return this.product.getSku();
 	}
 }

@@ -35,11 +35,11 @@ public class BundleProduct extends Product
 	 * @param unitPrice    The base price of the bundle before discount.
 	 * @param discount     The discount percentage.
 	 */
-	public BundleProduct(String sku, String title, int initialStock,
+	public BundleProduct(String sku, String title, String description, int initialStock,
 			Farmer supplier, double unitPrice, double discount)
 	{
 
-		super(sku, title, initialStock, supplier, unitPrice);
+		super(sku, title, description, initialStock, supplier, unitPrice);
 		this.bundleDiscountPercentage = discount;
 		this.components = new ArrayList<>();
 	}
@@ -83,10 +83,4 @@ public class BundleProduct extends Product
 		this.bundleDiscountPercentage = bundleDiscountPercentage;
 	}
 
-	@Override
-	public String getDetails()
-	{
-		// TODO Implement this later
-		return null;
-	}
 }

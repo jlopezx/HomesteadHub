@@ -9,15 +9,15 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of PaymentResult is to provide information of the
  *          transaction.
  */
 public class PaymentResult
 {
-	private boolean success; // True if payment is successful, false otherwise
-	private String confirmationId; // ID of the transaction
+	private String status; // True if payment is successful, false otherwise
+	private String transactionId; // ID of the transaction
 	private String message; // Messages related to the transaction
 
 	/**
@@ -27,10 +27,10 @@ public class PaymentResult
 	 * @param confirmationId ID of the payment
 	 * @param message        Messages related to the transaction
 	 */
-	public PaymentResult(boolean success, String confirmationId, String message)
+	public PaymentResult(String status, String confirmationId, String message)
 	{
-		this.success = success;
-		this.confirmationId = confirmationId;
+		this.status = status;
+		this.transactionId = confirmationId;
 		this.message = message;
 	}
 
@@ -39,9 +39,9 @@ public class PaymentResult
 	 * 
 	 * @return success boolean
 	 */
-	public boolean isSuccess()
+	public String getStatus()
 	{
-		return success;
+		return status;
 	}
 
 	/**
@@ -49,9 +49,9 @@ public class PaymentResult
 	 * 
 	 * @return confirmationId String
 	 */
-	public String getConfirmationId()
+	public String getTransactionId()
 	{
-		return confirmationId;
+		return transactionId;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class PaymentResult
 	@Override
 	public String toString()
 	{
-		return "PaymentResult [success=" + success + ", confirmationId="
-				+ confirmationId + ", message=" + message + "]";
+		return "PaymentResult [success=" + status + ", confirmationId="
+				+ transactionId + ", message=" + message + "]";
 	}
 }

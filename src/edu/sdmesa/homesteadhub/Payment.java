@@ -55,4 +55,14 @@ public class Payment
 	{
 		return transactionId;
 	}
+	
+	public String getPaymentMethod()
+	{
+		return paymentMethod;
+	}
+	
+	public double getAmount()
+	{
+		return amount;
+	}
 }

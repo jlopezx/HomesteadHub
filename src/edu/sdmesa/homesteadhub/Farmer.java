@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of Farmer is to represents a Farmer in the
  *          HomesteadHub system.

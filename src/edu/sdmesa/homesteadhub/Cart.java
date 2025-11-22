@@ -12,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of Cart is to represent the shopping cart for a
  *          Customer.
@@ -23,6 +23,13 @@ public class Cart
 	private Customer customer;
 	// Cart owns its LineItems. Key is the Product SKU for quick lookup.
 	private Map<String, LineItem> items;
+
+	/**
+	 * Purpose: No-args constructor 
+	 */
+	public Cart()
+	{
+	}
 
 	/**
 	 * Constructor for Cart.

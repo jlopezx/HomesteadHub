@@ -11,7 +11,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-11-21
  * 
  * @Purpose The reponsibility of Product is to represent an item for sale in the
  *          catalog.
@@ -23,6 +23,7 @@ public abstract class Product
 	private int stockQuantity; // Amoung of product available for sale
 	private Farmer farmer; // Product HAS-A Farmer
 	private double unitPrice; // Base price of the product
+	private String description;
 
 	/**
 	 * Constructor for Product used when a SKU is provided.
@@ -34,11 +35,12 @@ public abstract class Product
 	 * @param supplier        The farmer supplying the product.
 	 * @param unitPrice       The price per unit/item.
 	 */
-	public Product(String sku, String title, int stockQuantity, Farmer farmer,
+	public Product(String sku, String title, String description, int stockQuantity, Farmer farmer,
 			double unitPrice)
 	{
 		this.sku = sku;
 		this.title = title;
+		this.description = description;
 		this.stockQuantity = stockQuantity;
 		this.farmer = farmer;
 		this.unitPrice = unitPrice;
@@ -72,11 +74,13 @@ public abstract class Product
 	public abstract double calculatePrice();
 
 	/**
-	 * Abstract method to get a display description, which differs for bundles.
+	 *  Method to get a get description
 	 * 
-	 * @return A string representing the product details.
+	 * @return A string representing the product description.
 	 */
-	public abstract String getDetails();
+	public String getDescription() {
+		return description;
+	}
 
 	/**
 	 * Updates the stock quantity, used during sales or restocking.
