@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose PaymentProcessor serves as the interface for all payment methods.
  * 
@@ -28,4 +28,6 @@ public interface PaymentProcessor
 	 */
 	PaymentResult processTransaction(double totalAmount,
 			PaymentDetail paymentDetails);
+	
+	String getPaymentType();
 }

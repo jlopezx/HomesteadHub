@@ -14,7 +14,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of InventoryManager is to manage the entire
  *          Product catalog and inventory levels.
@@ -101,14 +101,21 @@ public class InventoryManager
 	}
 
 	/**
-	 * Purpose: 
-	 * @param sku
-	 * @param i
+	 * Purpose: Adjusts the product's stock as it's ordered
+	 * 
+	 * @param sku Stocking keeping unit of the product
+	 * @param purchasedInventory Amount of inventory purchased
 	 */
 	public void adjustStock(String sku, int purchasedInventory)
 	{
 		Product tempProduct = productCatalog.get(sku);
+		// TESTING PRINTS FOR TROUBLESHOOTING
+		System.out.println("INVENTORYMANAGER: AdjustStock: Temp Product Stock Quantity: " + tempProduct.getStockQuantity());
+		System.out.println("INVENTORYMANAGER: AdjustStock: passed in purchasedInventory: " + purchasedInventory);
+		
 		tempProduct.setStockQuantity(tempProduct.getStockQuantity() - purchasedInventory);
+		// TESTING PRINTS FOR TROUBLESHOOTING
+		System.out.println("INVENTORYMANAGER: AdjustStock: Temp Product Stock Quantity: " + tempProduct.getStockQuantity());
 		
 	}
 }

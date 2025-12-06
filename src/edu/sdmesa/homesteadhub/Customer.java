@@ -12,7 +12,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of Customer is to represent a Customer in the
  *          HomesteadHub system.
@@ -144,9 +144,24 @@ public class Customer extends User
 		this.shippingAddress = shippingAddress;
 	}
 
+	/**
+	 * Purpose:  Return the real name of the customer. Different from username
+	 * 
+	 * @return name Customer's name
+	 */
 	public String getName()
 	{
 		return name;
+	}
+	
+	/**
+	 * Purpose: Allows customer's name to be changed 
+	 * 
+	 * @param name New customer name
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 
 }

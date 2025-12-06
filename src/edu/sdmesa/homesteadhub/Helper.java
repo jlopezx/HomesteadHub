@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of Helper is to provid helper methods for
  *          converting domain objects (User, Product, Order) to and from their
@@ -20,7 +20,11 @@ import java.util.ArrayList;
 public class Helper
 {
 	/**
-	 * Converts a User object into a storable string format.
+	 * Purpose: Converts a User object into a storable string format.
+	 * 
+	 * @param user User object to save
+	 * 
+	 * @return String formatted with User object details
 	 */
 	public String serializeUser(User user)
 	{
@@ -45,7 +49,12 @@ public class Helper
 	}
 
 	/**
-	 * Converts a storable string format back into a User object.
+	 * Purpose: Converts a storable string format back into a User object.
+	 * 
+	 * @param data Data inside user file
+	 * 
+	 * @return Stored Customer object as a new Customer object; null if
+	 *         unsuccessful
 	 */
 	public User deserializeUser(String data)
 	{
@@ -77,8 +86,13 @@ public class Helper
 	}
 
 	/**
-	 * Converts a Product object into a storable string format (Type, SKU, Name,
+	 * Purpose: Converts a Product object into a storable string format (Type,
+	 * SKU, Name,
 	 * Stock, Price, FarmerID).
+	 * 
+	 * @param product Product object to be saved
+	 * 
+	 * @return String format of Product object; null if unsuccessful
 	 */
 	public String serializeProduct(Product product)
 	{
@@ -86,8 +100,8 @@ public class Helper
 		{
 			SimpleProduct sp = (SimpleProduct) product;
 			return String.format("SIMPLE,%s,%s,%s,%d,%.2f,%s", sp.getSku(),
-					sp.getTitle(), sp.getDescription(), sp.getStockQuantity(), sp.calculatePrice(),
-					sp.getFarmer().getUserId());
+					sp.getTitle(), sp.getDescription(), sp.getStockQuantity(),
+					sp.calculatePrice(), sp.getFarmer().getUserId());
 		}
 		return null;
 	}
@@ -96,26 +110,37 @@ public class Helper
 	// (Requires recursion)
 
 	/**
-	 * Converts a storable string format back into a Product object to
+	 * Purpose: Converts a storable string format back into a Product object to
 	 * reconstruct it in memory.
+	 * 
+	 * @param data   Data from products file
+	 * @param farmer Farmer who's product belongs to
+	 * 
+	 * @return Stored Product object as a new SimpleProduct object; null if
+	 *         unsuccessful
 	 */
 	public Product deserializeProduct(String data, Farmer farmer)
 	{
 		String[] parts = data.split(",");
 		// Provides a layer of security to make sure we're not reading from an
 		// invalid line
-		if (parts.length < 8) return null;
+		if (parts.length < 7) return null;
 
 		String type = parts[0];
 		String sku = parts[1];
 		String title = parts[2];
 		String description = parts[3];
-		int stock = Integer.parseInt(parts[3]);
-		double price = Double.parseDouble(parts[4]);
-		// parts[5] is the Farmer ID. Not needed right now
+		int stock = Integer.parseInt(parts[4]);
+		double price = Double.parseDouble(parts[5]);
+		// parts[6] is the Farmer ID. Not needed right now
 		if (type.equals("SIMPLE"))
 		{
-			return new SimpleProduct(sku, title, description, stock, farmer, price);
+			return new SimpleProduct(sku, title, description, stock, farmer,
+					price);
+		}
+		else
+		{
+			System.err.println("Helper couldn't return simple product");
 		}
 		return null;
 	}
@@ -125,7 +150,8 @@ public class Helper
 	 * CustomerID, Total, Status).
 	 * 
 	 * @param order object we want to save
-	 * @return String formatted as an Order
+	 * 
+	 * @return String formatted from an Order object
 	 */
 	public String serializeOrder(Order order)
 	{
@@ -137,9 +163,10 @@ public class Helper
 	/**
 	 * Purpose: Converts a storable string format back into an Order object.
 	 * 
-	 * @param data
-	 * @param customer
-	 * @return Order object with
+	 * @param data     Data from stored orders file
+	 * @param customer Customer order belongs to
+	 * 
+	 * @return Stored order object as a new Order object; null if unsuccessful
 	 */
 	public Order deserializeOrder(String data, Customer customer)
 	{
@@ -151,10 +178,10 @@ public class Helper
 		String orderId = parts[0];
 		// parts[1] is customerId. Not needed right now
 		double total = Double.parseDouble(parts[2]);
-		// parts[3] is order status. Not needed right now
+		String status = parts[3];
 
 		// Object is recreated in memory using Order constructor
 		return new Order(orderId, customer, new ArrayList<>(), total,
-				customer.getShippingAddress());
+				customer.getShippingAddress(), status);
 	}
 }

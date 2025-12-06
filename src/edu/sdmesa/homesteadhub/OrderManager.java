@@ -1,4 +1,3 @@
-
 package edu.sdmesa.homesteadhub;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose Manages the business logic for placing an order,
  *          coordinating inventory management and payment processing.
@@ -65,9 +64,12 @@ public class OrderManager
 
 		for (LineItem item : items.values())
 		{
-			// Check stock before attempting to adjust
+			// Check stock before attempting to adjust by comparing stock
+			// quanity with items in the cart
 			Product product = inventoryManager.getProduct(item.getSku());
 
+			// Check if product exists or if there's enough product stocl for
+			// requested quantity in cart
 			if (product == null
 					|| product.getStockQuantity() < item.getQuantity())
 			{
@@ -87,7 +89,10 @@ public class OrderManager
 
 		// Process Payment
 		System.out.println("ORDER MANAGER: Processing payment via "
-				+ paymentDetail.getPaymentMethod() + "...");
+				+ paymentDetail.getPaymentMethod().getPaymentType() + "...");
+
+		// paymentProcessor is defined in the constructor. It is passed in when
+		// called.
 		PaymentResult result = paymentProcessor.processTransaction(subtotal,
 				paymentDetail);
 
@@ -104,8 +109,11 @@ public class OrderManager
 				newOrder.getOrderId(), newOrder.getStatus());
 
 		// Clear the customer's cart after successful order placement
+
+		System.out.println("ORDER MANAGER: Clearing cart...");
 		customer.getCart().clearCart();
 
+		// Returns the order object if successful
 		return newOrder;
 	}
 }

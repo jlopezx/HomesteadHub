@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of LineItem is to represent a single line entry in
  *          a Cart or an Order.
@@ -21,6 +21,9 @@ public class LineItem
 	private Product product; // LineItem has-a Product
 	private int quantity; // The amount of product ordered
 	private final double unitPrice; // Price captured at the time of creation/checkout
+	private String sku;
+	private String title;
+	private double total;
 
 	/**
 	 * Constructor for LineItem.
@@ -30,9 +33,28 @@ public class LineItem
 	 */
 	public LineItem(Product product, int quantity)
 	{
+		this.sku = product.getSku();
 		this.product = product;
 		this.quantity = quantity;
 		this.unitPrice = product.getUnitPrice();
+	}
+
+	/**
+	 * 
+	 * Purpose: TEST CONSTRUCTOR TO BUILD MOCK DATA FOR GUI CREATION
+	 * @param sku
+	 * @param title
+	 * @param qty
+	 * @param price
+	 * @param total
+	 */
+	public LineItem(String sku, String title, int qty, double price, double total)
+	{
+		this.sku = sku;
+		this.title = title;
+		this.quantity = qty;
+		this.unitPrice = price;
+		this.total = total;
 	}
 
 	/**
@@ -90,8 +112,33 @@ public class LineItem
 		this.quantity = quantity;
 	}
 	
+	/**
+	 * Purpose: Getter - Returns the sku
+	 * 
+	 * @return sku Stocking keeping unit of the product
+	 */
 	public String getSku()
 	{
-		return this.product.getSku();
+		return this.sku;
+	}
+	
+	/**
+	 * Purpose: Getter - Returns title of product
+	 * 
+	 * @return title Product title
+	 */
+	public String getTitle()
+	{
+		return this.title;
+	}
+	
+	/**
+	 * Purpose: Getter - Returns total purchase amount
+	 * 
+	 * @return total Purchase total
+	 */
+	public double getTotal()
+	{
+		return this.total;
 	}
 }

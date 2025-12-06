@@ -9,45 +9,63 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-11
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of PaymentDetail is to transfer data for payment
- *          information provided
- *          by the customer to initiate a transaction. This is the INPUT data.
+ *          information provided by the customer to initiate a transaction. This
+ *          is the INPUT data.
  */
 public class PaymentDetail
 {
-	private final String paymentMethod;
-	private final String paymentToken;
-	private final String customerName;
+	// Payment's amount
+	private double amount;
+	// Processor method customer selected
+	private final PaymentProcessor paymentMethod;
+	// The customer who is making the purchase
+	private Customer customer;
 
-	// Test constructor
-	public PaymentDetail(String method)
+	/**
+	 * Purpose: Constructor to initialize payment details
+	 * 
+	 * @param amount Payment amount
+	 * @param paymentMethod Chosen payment method
+	 * @param customer User who is making the purchase
+	 */
+	public PaymentDetail(double amount, PaymentProcessor paymentMethod,
+			Customer customer)
 	{
-		this.paymentMethod = method;
-		this.paymentToken = "";
-		this.customerName = "";
+		this.amount = amount;
+		this.paymentMethod = paymentMethod;
+		this.customer = customer;
 	}
 
-	public PaymentDetail(Payment payment, Customer customer)
-	{
-		this.paymentMethod = payment.getPaymentMethod();
-		this.paymentToken = payment.getTransactionId();
-		this.customerName = customer.getName();
-	}
-
-	public String getPaymentMethod()
+	/**
+	 * Purpose: Getter - Returns the payment method inputed by customer
+	 * 
+	 * @return paymentMethod PaymentProcessor object of payment method chosen
+	 */
+	public PaymentProcessor getPaymentMethod()
 	{
 		return paymentMethod;
 	}
 
-	public String getPaymentToken()
+	/**
+	 * Purpose: Getter - Returns amount of Payment
+	 * 
+	 * @return amount Total amount of purhcase
+	 */
+	public double getAmount()
 	{
-		return paymentToken;
+		return amount;
 	}
 
-	public String getCustomerName()
+	/**
+	 * Purpose: Getter - Returns the customer who is making the payment
+	 * 
+	 * @return customer User who is making the purchase
+	 */
+	public Customer getCustomer()
 	{
-		return customerName;
+		return customer;
 	}
 }

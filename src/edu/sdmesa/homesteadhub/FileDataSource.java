@@ -16,7 +16,7 @@ import java.util.Scanner;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of FileDataSource is Concrete implementation of
  *          DataRepository that persists data to local text files.
@@ -51,6 +51,13 @@ public class FileDataSource implements DataRepository
 		}
 	}
 
+	/**
+	 * Purpose: Writes user to USERS_FILE for presistence
+	 * 
+	 * @param user User object to save
+	 * 
+	 * @return user Specific User type (Customer or Farmer); null otherwise
+	 */
 	@Override
 	public User saveUser(User user)
 	{
@@ -67,7 +74,12 @@ public class FileDataSource implements DataRepository
 	}
 
 	/**
-	 * Finds a user by their unique ID.
+	 * Purpose: Finds a user by their unique ID.
+	 * Utilizes an ehanced for loop to find user
+	 * 
+	 * @param userId UserId to be found
+	 * 
+	 * @return user Found User object matching userId; null if not found
 	 */
 	@Override
 	public User findUserById(String userId)
@@ -83,6 +95,11 @@ public class FileDataSource implements DataRepository
 	}
 
 	/**
+	 * Purpose: Finds a user by username
+	 * 
+	 * @param username Username to search
+	 * 
+	 * @return user Found User object matching userId; null if not found
 	 */
 	@Override
 	public User findUserByUsername(String username)
@@ -98,6 +115,11 @@ public class FileDataSource implements DataRepository
 		return null;
 	}
 
+	/**
+	 * Purpose: Finds all users inside USERS_FILE
+	 * 
+	 * @return users List of all User objects
+	 */
 	@Override
 	public List<User> findAllUsers()
 	{
@@ -122,6 +144,13 @@ public class FileDataSource implements DataRepository
 		return users;
 	}
 
+	/**
+	 * Purpose: Writes Project object to PRODUCTS_FILE for presistence.
+	 * 
+	 * @param product Product object to save
+	 * 
+	 * @return product Returns product object; null otherwise
+	 */
 	@Override
 	public Product saveProduct(Product product)
 	{
@@ -138,9 +167,17 @@ public class FileDataSource implements DataRepository
 		return product;
 	}
 
+	/**
+	 * Purpose: Finds product by SKU belonging to a farmer
+	 * 
+	 * @param sku Stock keeping unit of product to find
+	 * @param farmer Farmer to focus search
+	 * @return product Product if found; null otherwise
+	 */
 	@Override
 	public Product findProductBySku(String sku, Farmer farmer)
 	{
+		// Retrieves products belonging to the farmer
 		List<Product> products = findAllProducts(farmer);
 		for (Product product : products)
 		{
@@ -150,10 +187,21 @@ public class FileDataSource implements DataRepository
 				// If SKUs match, it returns the product
 				return product;
 			}
+			else
+			{
+				System.err.println("FileDataSource couldn't find product for "
+						+ farmer.getUsername());
+			}
 		}
 		return null;
 	}
 
+	/**
+	 * Purpose: Find all products belonging to a farmer
+	 * 
+	 * @param farmer Farmer to focus search
+	 * @return products List of all products belonging to farmer if any
+	 */
 	@Override
 	public List<Product> findAllProducts(Farmer farmer)
 	{
@@ -181,7 +229,14 @@ public class FileDataSource implements DataRepository
 
 		return products;
 	}
-
+	
+	/**
+	 * Purpose: Writes Order object to ORDERS_FILE for presistence
+	 * 
+	 * @param order Order to save
+	 * 
+	 * @return order Order object if successful; null otherwise
+	 */
 	@Override
 	public Order saveOrder(Order order)
 	{
@@ -196,7 +251,15 @@ public class FileDataSource implements DataRepository
 		}
 		return order;
 	}
-
+	
+	/**
+	 * Purpose: Finds order object by Id belonging to a customer
+	 * 
+	 * @param orderId Order ID of object to be found
+	 * @param customer Customer to focus search
+	 * 
+	 * @return order Order object if found; null otherwise
+	 */
 	@Override
 	public Order findOrderById(String orderId, Customer customer)
 	{
@@ -209,7 +272,14 @@ public class FileDataSource implements DataRepository
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Purpose: Finds ALL orders belonging to a customer 
+	 * 
+	 * @param customer Customer to focus search on
+	 * 
+	 * @return orders List of all Order objects belonging to customer
+	 */
 	@Override
 	public List<Order> findOrdersByCustomer(Customer customer)
 	{

@@ -14,7 +14,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  *
  * @Purpose The reponsibility of Order is to represent a placed Order.
  */
@@ -33,7 +33,7 @@ public class Order
 	private final List<LineItem> items;
 	private String status; // Set with "PENDING_PICKUP", "SHIPPED", "CANCELLED"
 	/**
-	 * Constructor for Order.
+	 * Constructor for Order. DESERIALIZATION CONSTRUCTOR
 	 * 
 	 * @param orderId  The unique ID for the order.
 	 * @param customer The Customer object who placed the order.
@@ -41,7 +41,7 @@ public class Order
 	 * @param items    The list of LineItems from the Cart.
 	 */
 	public Order(String orderId, Customer customer, List<LineItem> items,
-			double totalAmount, String shippingAddress)
+			double totalAmount, String shippingAddress, String status)
 	{
 		this.items = new ArrayList<>();
 		this.orderId = orderId;
@@ -50,7 +50,7 @@ public class Order
 		this.orderDate = new Date(); // Keep a time record
 		this.totalAmount = totalAmount;
 		this.shippingAddress = shippingAddress;
-		this.status = "Placed"; // Initial status
+		this.status = status;
 
 	}
 	/**
@@ -70,24 +70,8 @@ public class Order
 		this.totalAmount = totalAmount;
 		this.shippingAddress = shippingAddress;
 		this.result = result; // Initial status
-		this.status = initializeStatus(result.getStatus());
+		this.status = result.getStatus();
 
-	}
-
-	/**
-	 * Helper method to set initial status based on payment outcome.
-	 * 
-	 * @param paymentStatus The status returned from the PaymentProcessor.
-	 * @return The appropriate initial Order status string.
-	 */
-	private String initializeStatus(String paymentStatus)
-	{
-		if ("SUCCESS_PENDING_PICKUP".equals(paymentStatus))
-		{
-			return "READY_FOR_PICKUP";
-		}
-		// Default status for other successful payments
-		return "PROCESSING";
 	}
 
 	/**
@@ -130,9 +114,9 @@ public class Order
 	}
 
 	/**
-	 * Purpose: Getter - Returns lineItems
+	 * Purpose: Getter - Returns line items
 	 * 
-	 * @return lineItems List<lineItems>
+	 * @return lineItems List<LineItem>
 	 */
 	public List<LineItem> getItems()
 	{
@@ -172,7 +156,7 @@ public class Order
 	/**
 	 * Purpose: Getter - Returns orderStatus
 	 * 
-	 * @return orderStatus String object
+	 * @return status Current order status
 	 */
 	public String getStatus()
 	{
@@ -182,18 +166,28 @@ public class Order
 	/**
 	 * Purpose: Setter - Modifies status private field
 	 * 
-	 * @param orderStatus
+	 * @param status The new status of the order
 	 */
 	public void setStatus(String status)
 	{
 		this.status = status;
 	}
-
+	
+	/**
+	 * Purpose: Getter - Returns the PaymentResult that holds all order information
+	 * 
+	 * @return result Final payment details
+	 */
 	public PaymentResult getPaymentResult()
 	{
 		return result;
 	}
 
+	/**
+	 * Purpose: The order's payment result
+	 * 
+	 * @param result The payment result object of the order
+	 */
 	public void setPaymentResult(PaymentResult result)
 	{
 		this.result = result;

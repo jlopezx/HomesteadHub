@@ -1,0 +1,208 @@
+.app-background {
+    -fx-background-color: #D8F3DC;
+}
+
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 6, 0);
+}
+
+.sidebar-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D6A4F;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2D6A4F;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #52B788;
+    -fx-text-fill: #2D6A4F;
+}
+
+.nav-button:selected {
+    -fx-background-color: #52B788;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 2, 2);
+}
+
+.big-button {
+    -fx-padding: 10px 20px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.logout-button {
+    -fx-background-color: #E0E0E0;
+    -fx-text-fill: #555555;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+}
+
+.logout-button:hover {
+    -fx-background-color: #DC3545;
+    -fx-text-fill: white;
+}
+
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 4, 4);
+    -fx-max-width: 900px;
+    -fx-min-width: 600px;
+}
+
+.view-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D6A4F;
+    -fx-padding: 0 0 15px 0;
+    -fx-border-color: #EEEEEE;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.product-table .column-header, .order-table .column-header {
+    -fx-background-color: #52B788;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.product-table .column-header-background, .order-table .column-header-background {
+    -fx-background-color: #2D6A4F;
+    -fx-background-radius: 5px 5px 0 0;
+}
+
+.product-table .table-row-cell:filled:odd, .order-table .table-row-cell:filled:odd {
+    -fx-background-color: #F8F8F8;
+}
+
+.product-table .table-row-cell:filled:hover, .order-table .table-row-cell:filled:hover {
+    -fx-background-color: #E6F3E6;
+}
+
+.fab-button {
+    -fx-background-color: #52B788;
+    -fx-background-radius: 50;
+    -fx-text-fill: white;
+    -fx-font-size: 36px;
+    -fx-padding: 5px 15px 5px 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 4, 4);
+}
+
+.fab-button:hover {
+    -fx-background-color: #2D6A4F;
+}
+
+.summary-card {
+    -fx-background-color: #F9F9F9;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+
+.summary-label {
+    -fx-font-weight: normal;
+    -fx-text-fill: #555555;
+    -fx-padding: 4px 0 4px 10px;
+}
+
+.summary-value {
+    -fx-font-weight: normal;
+    -fx-padding: 4px 10px 4px 0;
+    -fx-alignment: CENTER-RIGHT;
+}
+
+.subtotal-bar, .grandtotal-bar {
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 0 5px 0;
+}
+
+.subtotal-bar {
+    -fx-background-color: #8DAB91;
+}
+
+.grandtotal-bar {
+    -fx-background-color: #52B788;
+}
+
+.subtotal-bar .summary-label, .subtotal-bar .summary-value,
+.grandtotal-bar .summary-label, .grandtotal-bar .summary-value {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.discount .summary-value {
+    -fx-text-fill: #C0392B;
+}
+
+.form-input, .form-textarea {
+    -fx-background-radius: 6px;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 6px;
+    -fx-padding: 8px;
+}
+
+.image-placeholder {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 8px;
+    -fx-border-color: #AAAAAA;
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-min-width: 130px;
+    -fx-min-height: 130px;
+    -fx-font-size: 40px;
+}
+
+.save-button {
+    -fx-background-color: #2D6A4F;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 40px;
+}
+
+.save-button:hover {
+    -fx-background-color: #52B788;
+}
+
+.quantity-control-button {
+    -fx-background-color: #2D6A4F;
+    -fx-text-fill: white;
+    -fx-min-width: 20px;
+    -fx-max-width: 20px;
+    -fx-padding: 2px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+}
+
+.quantity-control-button:hover {
+    -fx-background-color: #52B788;
+}
+
+.place-order-button {
+    -fx-background-color: #2D6A4F;
+}
+
+.place-order-button:hover {
+    -fx-background-color: #52B788;
+}
+
+.product-card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #EEE;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 2, 2);
+}

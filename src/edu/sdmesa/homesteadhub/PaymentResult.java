@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-5
  * 
  * @Purpose The reponsibility of PaymentResult is to provide information of the
  *          transaction.
@@ -27,10 +27,10 @@ public class PaymentResult
 	 * @param confirmationId ID of the payment
 	 * @param message        Messages related to the transaction
 	 */
-	public PaymentResult(String status, String confirmationId, String message)
+	public PaymentResult(String status, String transactionId, String message)
 	{
 		this.status = status;
-		this.transactionId = confirmationId;
+		this.transactionId = transactionId;
 		this.message = message;
 	}
 

@@ -7,7 +7,7 @@ This document centralizes all external references and sources used for this proj
 ## Lead Author and Version
 
 * **Lead Author(s):** Joshua Lopez
-* **Version:** 2025-11-14
+* **Version:** 2025-12-5
 
 ---
 
@@ -46,5 +46,48 @@ This document centralizes all external references and sources used for this proj
 11. **Obregon, A.** (2024). *Java's UUID.randomUUID() Method Explained.*
 [https://medium.com/@AlexanderObregon/javas-uuid-randomuuid-method-explained-3d9cec24b93a](https://medium.com/@AlexanderObregon/javas-uuid-randomuuid-method-explained-3d9cec24b93a)
 
-12. **Stack Overflow.** (2020). *How should I design an E-commerce Class Diagram?*
+12. **Oracle.** (2021). *JavaFX CSS Reference Guide.*
+[https://openjfx.io/javadoc/17/javafx.graphics/javafx/scene/doc-files/cssref.html)
+
+13. **Stack Overflow.** (2015). *JavaFX: setting background color for Text controls.*
+[https://stackoverflow.com/questions/29453467/javafx-setting-background-color-for-text-controls](https://stackoverflow.com/questions/29453467/javafx-setting-background-color-for-text-controls)
+
+14. **Stack Overflow.** (2020). *How should I design an E-commerce Class Diagram?*
 [https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram](https://stackoverflow.com/questions/65023323/how-should-i-design-an-e-commerce-class-diagram)
+
+15. **Stack Overflow.** (2018). *JavaFX setCellValueFactory.*
+[https://stackoverflow.com/questions/50612023/javafx-setcellvaluefactory](https://stackoverflow.com/questions/50612023/javafx-setcellvaluefactory)
+
+16. **Stack Overflow.** (2014). *JavaFx use String with Double on table column.*
+[https://stackoverflow.com/questions/27117949/javafx-use-string-with-double-on-table-column](https://stackoverflow.com/questions/27117949/javafx-use-string-with-double-on-table-column)
+
+17. **Stack Overflow.** (2016). *JavaFX putting Image into a TableView using CellFactory.*
+[https://stackoverflow.com/questions/40713629/javafx-putting-image-into-a-tableview-using-cellfactory](https://stackoverflow.com/questions/40713629/javafx-putting-image-into-a-tableview-using-cellfactory)
+
+18. **Tutorials Point.** (2017). *JavaFX - Images.*
+[https://www.tutorialspoint.com/javafx/javafx_images.htm](https://www.tutorialspoint.com/javafx/javafx_images.htm)
+
+19. **Tutorials Point.** (2017). *JavaFX - Layout GridPane.*
+[https://www.tutorialspoint.com/javafx/layout_gridpane.htm](https://www.tutorialspoint.com/javafx/layout_gridpane.htm)
+
+20. **Oracle.** (2015). *Class VBox (Java Platform SE 8).*
+[https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/VBox.html](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/VBox.html)
+
+21. **Gremious** (2020). *JavaFX: How to make a VBox and it's contents expand infinitely with window height like they do with width?*
+[https://stackoverflow.com/questions/60647102/javafx-how-to-make-a-vbox-and-its-contents-expand-infinitely-with-window-heigh](https://stackoverflow.com/questions/60647102/javafx-how-to-make-a-vbox-and-its-contents-expand-infinitely-with-window-heigh)
+
+22. **Naukri Code 360.** (2024). *JavaFX Inline Styles - Naukri Code 360.*
+[https://www.naukri.com/code360/library/javafx-inline-styles](https://www.naukri.com/code360/library/javafx-inline-styles)
+
+23. **w3resource** (2025). *JavaFX Styling: External CSS separation.*
+[https://www.w3resource.com/java-exercises/javafx/javafx-styling-and-css-exercise-5.php](https://www.w3resource.com/java-exercises/javafx/javafx-styling-and-css-exercise-5.php)
+
+24. **GeeksforGeeks.** (2018). *Stream mapToDouble() in Java with examples.*
+[https://www.geeksforgeeks.org/java/stream-maptodouble-java-examples/#](https://www.geeksforgeeks.org/java/stream-maptodouble-java-examples/#)
+
+25. **Dubey, Angad.** (2024). *E-Commerce Website Project | Amazon/Flipkart like Website | Java Project | Backend | AccioJob.*
+[https://www.youtube.com/watch?v=qpbkxxZMNok](https://www.youtube.com/watch?v=qpbkxxZMNok)
+
+26. **Redko, Alla.** (2013). *Using JavaFX UI Controls | 12 Table View.*
+[https://docs.oracle.com/javafx/2/ui_controls/table-view.htm](https://docs.oracle.com/javafx/2/ui_controls/table-view.htm)
+
