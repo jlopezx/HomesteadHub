@@ -11,7 +11,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of Product is to represent an item for sale in the
  *          catalog.
@@ -22,6 +22,7 @@ public abstract class Product
 	private String title; // Name of the product
 	private int stockQuantity; // Amoung of product available for sale
 	private Farmer farmer; // Product HAS-A Farmer
+	private String farmerUsername;
 	private double unitPrice; // Base price of the product
 	private String description;
 
@@ -29,20 +30,44 @@ public abstract class Product
 	 * Constructor for Product used when a SKU is provided.
 	 * Mainly used for DESERIALIZATION/LOADING.
 	 * 
-	 * @param sku             The unique product identifier.
-	 * @param title           The display name of the product.
-	 * @param quantityInStock The current inventory count.
-	 * @param supplier        The farmer supplying the product.
-	 * @param unitPrice       The price per unit/item.
+	 * @param sku           The unique product identifier.
+	 * @param title         The display name of the product.
+	 * @param description   The product's details.
+	 * @param stockQuantity The current inventory count.
+	 * @param farmer        The farmer supplying the product.
+	 * @param unitPrice     The price per unit/item.
 	 */
-	public Product(String sku, String title, String description, int stockQuantity, Farmer farmer,
-			double unitPrice)
+	public Product(String sku, String title, String description,
+			int stockQuantity, Farmer farmer, double unitPrice)
 	{
 		this.sku = sku;
 		this.title = title;
 		this.description = description;
 		this.stockQuantity = stockQuantity;
 		this.farmer = farmer;
+		this.unitPrice = unitPrice;
+	}
+
+	/**
+	 * Purpose: Constructor for Product used when a SKU is provided. Used for
+	 * finding ALL products.
+	 * Mainly used for DESERIALIZATION/LOADING.
+	 * 
+	 * @param sku            The unique product identifier.
+	 * @param title          The display name of the product.
+	 * @param description    The product's details.
+	 * @param stockQuantity  The current inventory count.
+	 * @param farmerUsername The farmer supplying the product.
+	 * @param unitPrice      The price per unit/item.
+	 */
+	public Product(String sku, String title, String description,
+			int stockQuantity, String farmerUsername, double unitPrice)
+	{
+		this.sku = sku;
+		this.title = title;
+		this.description = description;
+		this.stockQuantity = stockQuantity;
+		this.farmerUsername = farmerUsername;
 		this.unitPrice = unitPrice;
 	}
 
@@ -74,11 +99,12 @@ public abstract class Product
 	public abstract double calculatePrice();
 
 	/**
-	 *  Method to get a get description
+	 * Method to get a get description
 	 * 
 	 * @return A string representing the product description.
 	 */
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 

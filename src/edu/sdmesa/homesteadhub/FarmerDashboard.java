@@ -23,20 +23,29 @@ import java.net.URL;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose Main JavaFX application for the Farmer Dashboard GUI.
  *          This class implements the two main views: Product Inventory and
  *          Orders.
  */
-public class FarmerDashboard
+public class FarmerDashboard extends Dashboard
 {
-	// --- Layout Nodes ---
-	private StackPane mainContentArea;
-	private ToggleButton inventoryButton;
-	private ToggleButton ordersButton;
+	/**
+	 * Purpose: Constructor to initialize Dashboard's essential field variables
+	 * 
+	 * @param primaryStage Main stage from Application
+	 * @param loginScene   Login Scene used to start dashboard
+	 * @param loggedInUser User logged into dashboard
+	 */
+	FarmerDashboard(Stage primaryStage, Scene loginScene, User loggedInUser)
+	{
+		super(primaryStage, loginScene, loggedInUser);
+	}
 
+	// Container for Farmer/Supplier products
 	private ObservableList<Product> products = null;
+
 	// Data we can pull from orders data based on the farmer
 	private final List<LineItem> mockOrderItems = Arrays.asList(
 			new LineItem("3512", "Heirloom Pumpkins", 20, 6.00, 120.00),
@@ -45,8 +54,24 @@ public class FarmerDashboard
 			new LineItem("5129", "Apples (Fuji)", 15, 8.00, 120.00),
 			new LineItem("1234", "Microgreens Mix", 25, 8.00, 200.00));
 
-	public void startFarmerDashboard(Stage primaryStage, Farmer farmer)
+	// Sidebar buttons creation
+	List<SidebarButtonConfig> farmerNavButtons = Arrays.asList(
+			new SidebarButtonConfig("Product Inventory", "inventory", true),
+			new SidebarButtonConfig("Orders", "orders", false));
+
+	public void startDashboard(Stage primaryStage, Scene loginScene, User user)
 	{
+
+		// Safe Check and Downcast
+		if (!(user instanceof Farmer))
+		{
+			System.err.println(
+					"Error: FarmerDashboard initialized with non-Farmer user type.");
+			handleLogout();
+		}
+
+		// Now we can safely cast the generic User object to a Farmer object
+		Farmer farmer = (Farmer) user;
 
 		// Initialize farmer's products with saved products
 		products = FXCollections.observableArrayList(
@@ -57,12 +82,11 @@ public class FarmerDashboard
 		root.getStyleClass().add("app-background");
 
 		// Main Content Area
-		mainContentArea = new StackPane();
-		mainContentArea.setPadding(new Insets(30));
-		root.setCenter(mainContentArea);
+		getMainScene().setPadding(new Insets(30));
+		root.setCenter(getMainScene());
 
 		// Left sidebar
-		VBox sidebar = createSidebar();
+		VBox sidebar = createSidebar("Farmer Dashboard", farmerNavButtons);
 		root.setLeft(sidebar);
 
 		// The default view
@@ -86,120 +110,6 @@ public class FarmerDashboard
 	}
 
 	/**
-	 * Prupose: Creates the left-hand navigation sidebar with menu items and the
-	 * Logout button.
-	 * 
-	 * @return sidebar VBox with appropriate elements
-	 */
-	private VBox createSidebar()
-	{
-		VBox sidebar = new VBox();
-		sidebar.setPrefWidth(250);
-		sidebar.setPadding(new Insets(20));
-		sidebar.getStyleClass().add("sidebar");
-		sidebar.setSpacing(15);
-
-		// Toggle Group for Navigation
-		ToggleGroup menuGroup = new ToggleGroup();
-
-		// Hamburger Icon/Title
-		Label headerLabel = new Label("Farm Dashboard");
-		headerLabel.getStyleClass().add("sidebar-header");
-		VBox.setMargin(headerLabel, new Insets(0, 0, 20, 0));
-
-		// Navigation Buttons
-		inventoryButton = createNavButton("Product Inventory", "inventory",
-				menuGroup);
-		ordersButton = createNavButton("Orders", "orders", menuGroup);
-
-		// Toggle Buttons VBox
-		VBox navBox = new VBox(10, headerLabel, inventoryButton, ordersButton);
-
-		// Logout Button
-		Button logoutButton = new Button("Logout");
-		logoutButton.setMaxWidth(Double.MAX_VALUE);
-		logoutButton.getStyleClass().add("logout-button");
-		logoutButton.setOnAction(
-				e -> System.out.println("Logout action triggered."));
-
-		// Structure: Header, Nav, Spacer, Logout
-		VBox content = new VBox(navBox, new Region(), logoutButton);
-		VBox.setVgrow(content.getChildren().get(1), Priority.ALWAYS);
-		sidebar.getChildren().add(content);
-
-		return sidebar;
-	}
-
-	/**
-	 * Purpose: Helper method to create styled navigation buttons and set their
-	 * action.
-	 * 
-	 * @param text   Button text
-	 * @param viewId ID of the view to switch to
-	 * @param group  ToggleGroup to manage button selection
-	 * @return The created ToggleButton
-	 */
-	private ToggleButton createNavButton(String text, String viewId,
-			ToggleGroup group)
-	{
-		// Creates the Nav button as a ToggleButton
-		ToggleButton button = new ToggleButton(text);
-		// Allows the buttons to be placed in a passed in group
-		button.setToggleGroup(group);
-		button.setMaxWidth(Double.MAX_VALUE);
-		button.getStyleClass().add("nav-button");
-
-		// Action Handler to switch views within the portal
-		button.setOnAction(e -> {
-			if (button.isSelected())
-			{
-				switchToView(viewId);
-			}
-		});
-
-		// Set the default selection for Product Inventory
-		if (viewId.equals("inventory"))
-		{
-			button.setSelected(true);
-		}
-
-		return button;
-	}
-
-	/**
-	 * Purpose: Main function to switch the content displayed in the center
-	 * StackPane.
-	 * 
-	 * @param viewId View ID of the scene to create
-	 */
-	private void switchToView(String viewId)
-	{
-		// Clear current view of the dashboard
-		mainContentArea.getChildren().clear();
-		Region view;
-
-		// Switch statement used to switch between different scenes when called
-		switch (viewId)
-		{
-			case "inventory":
-				view = createInventoryView();
-				break;
-			case "orders":
-				view = createOrdersView();
-				break;
-			case "addItemForm":
-				view = createAddItemForm();
-				break;
-			default:
-				view = new Label("View Not Found");
-				break;
-		}
-		// Adds newly created scene to main area
-		mainContentArea.getChildren().add(view);
-		StackPane.setAlignment(view, Pos.TOP_CENTER);
-	}
-
-	/**
 	 * Purpose: Renders the Product Inventory view (table and Add Item button).
 	 * 
 	 * @return inventoryLayout Layout with inventory elements
@@ -214,6 +124,7 @@ public class FarmerDashboard
 
 		// --- Table View Setup ---
 		TableView<Product> table = new TableView<>();
+
 		// TODO: pull products from class. Create and use data from
 		// AppInitializer after testing
 		table.setItems(products);
@@ -241,21 +152,27 @@ public class FarmerDashboard
 
 		// --------- Description Column ---------
 		TableColumn<Product, String> descCol = new TableColumn<>("Description");
+
 		// PropertyValueFactory looks for a getter in Product matching
 		// "description"
 		descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+
 		// Sets column width
 		descCol.setPrefWidth(250);
 
 		// --------- Unit Price Column ---------
 		TableColumn<Product, Double> priceCol = new TableColumn<>("Unit Price");
+
 		// PropertyValueFactory looks for a getter in Product matching
 		// "unitPrice"
 		priceCol.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+
 		// Sets column width
 		priceCol.setPrefWidth(120);
+
 		// Styles price column to center column to the right
 		priceCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+
 		// setCellFactory requires a callback as an argument. In this case we're
 		// using a lambda function to define the column paramter and body
 		priceCol.setCellFactory(column -> new TableCell<Product, Double>()
@@ -285,6 +202,7 @@ public class FarmerDashboard
 		// Add Item Button for floating action button
 		Button addButton = new Button("+");
 		addButton.getStyleClass().add("fab-button");
+
 		// Action to switch to the Product Manager Form
 		addButton.setOnAction(e -> switchToView("addItemForm"));
 
@@ -378,69 +296,57 @@ public class FarmerDashboard
 	 */
 	private Region createOrdersView()
 	{
-		// Creates the orders layout
 		VBox ordersLayout = new VBox(20);
 		ordersLayout.getStyleClass().add("content-card");
 
-		// TODO: Pull from order's transaction ID
-		// --------- Order View's Title ---------
-		Label title = new Label("Customer Orders (Order ID: O-20251202-001)");
+		Label title = new Label("Purchase History");
 		title.getStyleClass().add("view-title");
 		VBox.setMargin(title, new Insets(0, 0, 10, 0));
 
+		// TODO: need to add a findByFarmer() that will find based on orders
+		// based on farmers only. There can be multiple farmers that a customer
+		// buys from so I have to find a way to serialize the orders made to
+		// each specific farmer/supplier based on a customer order.
+		// List<Order> orders =
+		// Tester.getRepository().findOrdersByCustomer(customer);
+
 		// --------- Order Items Table ---------
-		TableView<LineItem> itemTable = new TableView<>();
-		// TODO: Pull orders from test Create and use data from AppInitializer
-		// after testing. Look at week 6's todo
+		TableView<LineItem> itemTable = createLineItemTable(false);
 		itemTable.setItems(FXCollections.observableArrayList(mockOrderItems));
-		itemTable.getStyleClass().add("order-table");
 
-		// ---- Defines the first order column, SKU ----
-		TableColumn<LineItem, String> itemSkuCol = new TableColumn<>(
-				"Item # (SKU)");
-		itemSkuCol.setCellValueFactory(new PropertyValueFactory<>("sku"));
-		// ---- Defines the second order column, Product title ----
-		TableColumn<LineItem, String> itemProductCol = new TableColumn<>(
-				"Product");
-		itemProductCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-		// ---- Defines the third order column, Quantity ----
-		TableColumn<LineItem, Integer> itemQuantityCol = new TableColumn<>(
-				"Quantity");
-		itemQuantityCol
-				.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-		itemQuantityCol.setStyle("-fx-alignment: CENTER;");
-		// ---- Defines the fourth order column, unit price ----
-		TableColumn<LineItem, Double> itemUnitPriceCol = new TableColumn<>(
-				"Unit Price");
-		itemUnitPriceCol
-				.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-		itemUnitPriceCol.setStyle("-fx-alignment: CENTER-RIGHT;");
-		itemUnitPriceCol
-				.setCellFactory(column -> GuiUtility.formatCurrencyCell());
-		// ---- Defines the fifth order column, total ----
-		TableColumn<LineItem, Double> itemTotalCol = new TableColumn<>("Total");
-		itemTotalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
-		itemTotalCol.setStyle("-fx-alignment: CENTER-RIGHT;");
-		// Formats total column in a currency format
-		itemTotalCol.setCellFactory(column -> GuiUtility.formatCurrencyCell());
-
-		// Adds all columns to table
-		itemTable.getColumns().addAll(itemSkuCol, itemProductCol,
-				itemQuantityCol, itemUnitPriceCol, itemTotalCol);
-		// Allows itemTable to expand vertically as needed
-		VBox.setVgrow(itemTable, Priority.ALWAYS);
-
-		// --------- Establishes the fiancial summary card ---------
-		GridPane summaryGrid = GuiUtility.createFinancialSummary(mockOrderItems);
-
-
-		// Layout the table and summary. Pushes it to the right
-		HBox summaryBox = new HBox(new Region(), summaryGrid);
-		HBox.setHgrow(summaryBox.getChildren().get(0), Priority.ALWAYS);
-
-		// Structures Order's elements in ordersLayout
-		ordersLayout.getChildren().addAll(title, itemTable, summaryBox);
+		ordersLayout.getChildren().addAll(title, itemTable);
 
 		return ordersLayout;
+	}
+
+	@Override
+	protected Region createSpecificView(String viewId)
+	{
+		Region view;
+
+		// Switch statement used to switch between different scenes when called
+		switch (viewId)
+		{
+			case "inventory":
+				view = createInventoryView();
+				break;
+			case "orders":
+				view = createOrdersView();
+				break;
+			case "addItemForm":
+				view = createAddItemForm();
+				break;
+			default:
+				view = new Label("View Not Found");
+				break;
+		}
+		return view;
+	}
+
+	// Unused method for FarmerDashboard
+	@Override
+	protected Region createSpecificView(String viewId, Product product)
+	{
+		return null;
 	}
 }

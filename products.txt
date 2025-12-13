@@ -1,1 +1,2 @@
-SIMPLE,22e23706-5f6c-475e-b8e5-bd08a03a96fe,Carrots,null,50,3.99,3412fec2-42a4-475e-9e0f-603ef6e5f7fe
+SIMPLE,0a9132fe-062f-4163-855a-65dca2f57ddf,Carrots,null,50,3.99,Luke
+SIMPLE,APPLE1,Apples,Gala Apples (5lb),100,9.99,Luke

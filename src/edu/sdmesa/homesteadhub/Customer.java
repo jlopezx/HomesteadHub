@@ -12,7 +12,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of Customer is to represent a Customer in the
  *          HomesteadHub system.
@@ -69,6 +69,10 @@ public class Customer extends User
 		super(userId, username, password, email);
 		this.shippingAddress = shippingAddress;
 		this.purchaseHistory = new ArrayList<>();
+
+		// Composition implementation: The Customer creates its own Cart upon
+		// existence.
+		this.cart = new Cart(this);
 	}
 
 	/**
@@ -145,7 +149,7 @@ public class Customer extends User
 	}
 
 	/**
-	 * Purpose:  Return the real name of the customer. Different from username
+	 * Purpose: Return the real name of the customer. Different from username
 	 * 
 	 * @return name Customer's name
 	 */
@@ -153,9 +157,9 @@ public class Customer extends User
 	{
 		return name;
 	}
-	
+
 	/**
-	 * Purpose: Allows customer's name to be changed 
+	 * Purpose: Allows customer's name to be changed
 	 * 
 	 * @param name New customer name
 	 */

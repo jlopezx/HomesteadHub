@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of Helper is to provid helper methods for
  *          converting domain objects (User, Product, Order) to and from their
@@ -101,13 +101,46 @@ public class Helper
 			SimpleProduct sp = (SimpleProduct) product;
 			return String.format("SIMPLE,%s,%s,%s,%d,%.2f,%s", sp.getSku(),
 					sp.getTitle(), sp.getDescription(), sp.getStockQuantity(),
-					sp.calculatePrice(), sp.getFarmer().getUserId());
+					sp.calculatePrice(), sp.getFarmer().getUsername());
 		}
 		return null;
 	}
 
-	// TODO: Implement serialization and deserialization for BundleProduct
-	// (Requires recursion)
+	/**
+	 * Purpose: Converts a storable string format back into a Product object to
+	 * reconstruct it in memory. Used to find ALL products.
+	 * 
+	 * @param data Data from products file
+	 * 
+	 * @return Stored Product object as a new SimpleProduct object; null if
+	 *         unsuccessful
+	 */
+	public Product deserializeProduct(String data)
+	{
+		String[] parts = data.split(",");
+		// Provides a layer of security to make sure we're not reading from an
+		// invalid line
+		if (parts.length < 7) return null;
+
+		String type = parts[0];
+		String sku = parts[1];
+		String title = parts[2];
+		String description = parts[3];
+		int stock = Integer.parseInt(parts[4]);
+		double price = Double.parseDouble(parts[5]);
+		// Finds farmer's username instead of ID. Can change later
+		String farmer = parts[6];
+		if (type.equals("SIMPLE"))
+		{
+			return new SimpleProduct(sku, title, description, stock, farmer,
+					price);
+		}
+		else
+		{
+			System.err.println("Helper couldn't return simple product");
+		}
+		return null;
+	}
 
 	/**
 	 * Purpose: Converts a storable string format back into a Product object to

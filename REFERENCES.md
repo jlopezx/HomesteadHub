@@ -91,3 +91,9 @@ This document centralizes all external references and sources used for this proj
 26. **Redko, Alla.** (2013). *Using JavaFX UI Controls | 12 Table View.*
 [https://docs.oracle.com/javafx/2/ui_controls/table-view.htm](https://docs.oracle.com/javafx/2/ui_controls/table-view.htm)
 
+27. **Oracle.** (2014). *ChangeListener.*
+[https://docs.oracle.com/javafx/2/api/javafx/beans/value/ChangeListener.html](https://docs.oracle.com/javafx/2/api/javafx/beans/value/ChangeListener.html)
+
+28. **PragmaticCoding.** (2022). *Observable Listeners in JavaFX.*
+[https://www.pragmaticcoding.ca/javafx/elements/listeners](https://www.pragmaticcoding.ca/javafx/elements/listeners)
+

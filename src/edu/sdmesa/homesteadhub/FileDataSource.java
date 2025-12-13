@@ -16,7 +16,7 @@ import java.util.Scanner;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of FileDataSource is Concrete implementation of
  *          DataRepository that persists data to local text files.
@@ -170,7 +170,7 @@ public class FileDataSource implements DataRepository
 	/**
 	 * Purpose: Finds product by SKU belonging to a farmer
 	 * 
-	 * @param sku Stock keeping unit of product to find
+	 * @param sku    Stock keeping unit of product to find
 	 * @param farmer Farmer to focus search
 	 * @return product Product if found; null otherwise
 	 */
@@ -229,7 +229,40 @@ public class FileDataSource implements DataRepository
 
 		return products;
 	}
-	
+
+	/**
+	 * Purpose: Find ALL products
+	 * 
+	 * @return products List of all products
+	 */
+	@Override
+	public List<Product> findAllProducts()
+	{
+		List<Product> products = new ArrayList<>();
+
+		// Updated file access
+		try (Scanner scanner = new Scanner(new File(PRODUCTS_FILE)))
+		{
+			while (scanner.hasNextLine())
+			{
+				String line = scanner.nextLine();
+				Product product = helper.deserializeProduct(line);
+
+				if (product != null)
+				{
+					products.add(product);
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Error reading products file: " + e.getMessage());
+		}
+
+		return products;
+	}
+
 	/**
 	 * Purpose: Writes Order object to ORDERS_FILE for presistence
 	 * 
@@ -251,11 +284,11 @@ public class FileDataSource implements DataRepository
 		}
 		return order;
 	}
-	
+
 	/**
 	 * Purpose: Finds order object by Id belonging to a customer
 	 * 
-	 * @param orderId Order ID of object to be found
+	 * @param orderId  Order ID of object to be found
 	 * @param customer Customer to focus search
 	 * 
 	 * @return order Order object if found; null otherwise
@@ -272,9 +305,9 @@ public class FileDataSource implements DataRepository
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Purpose: Finds ALL orders belonging to a customer 
+	 * Purpose: Finds ALL orders belonging to a customer
 	 * 
 	 * @param customer Customer to focus search on
 	 * 

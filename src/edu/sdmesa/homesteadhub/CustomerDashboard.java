@@ -1,10 +1,11 @@
 package edu.sdmesa.homesteadhub;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -32,60 +31,56 @@ import javafx.stage.Stage;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of CustomerDashboard is to provide a
  *          UI experience for a customer, allowing them to browse products,
  *          manage their cart, checkout, and view their purchase history.
  */
-public class CustomerDashboard
+public class CustomerDashboard extends Dashboard
 {
-	// Area where views are displayed
-	private StackPane mainContentArea;
 
-	// Nav buttons
-	private ToggleButton catalogButton;
-	private ToggleButton purchasesButton;
-	private ToggleButton cartButton;
+	private Customer customer;
+	private OrderManager orderManager;
+	private String selectedMethod;
+	private Order newOrder;
 
-	// Mock data for viewing past orders
-	private final List<LineItem> mockCustomerOrders = Arrays.asList(
-			new LineItem("3512", "Heirloom Pumpkins", 20, 6.00, 120.00),
-			new LineItem("9876", "Compost Soil", 5, 30.00, 150.00),
-			new LineItem("2123", "Eggs (Free Range)", 15, 7.00, 105.00),
-			new LineItem("5129", "Apples (Fuji)", 15, 8.00, 120.00),
-			new LineItem("1234", "Microgreens Mix", 25, 8.00, 200.00));
-
-	// Mock Cart Items
-	private final List<LineItem> mockCartItems = Arrays.asList(
-			new LineItem("5129", "Apples (Fuji)", 15, 8.00, 120.00),
-			new LineItem("9876", "Compost Soil", 1, 30.00, 30.00));
+	// Sidebar buttons creation
+	List<SidebarButtonConfig> customerNavButtons = Arrays.asList(
+			new SidebarButtonConfig("Catalog", "catalog", true),
+			new SidebarButtonConfig("Purchases", "purchases", false),
+			new SidebarButtonConfig("Cart", "cart", false));
 
 	// Define colors here so they can be used in the confirmation view
 	private final String primaryColor = "#52B788";
 	private final String darkColor = "#2D6A4F";
 
+	public CustomerDashboard(Stage primaryStage, Scene loginScene,
+			User loggedInUser)
+	{
+		super(primaryStage, loginScene, loggedInUser);
+	}
+
 	/**
 	 * Purpose: Starts the customer dashboard GUI
 	 * 
-	 * @param primaryStage Stage to carry from
-	 * @param customer     User logged in
+	 * @param primaryStage Main stage from Application
+	 * @param loginScene   Login Scene used to start dashboard
+	 * @param loggedInUser User logged into dashboard
 	 */
-	public void startCustomerDashboard(Stage primaryStage, Customer customer)
+	public void startDashboard(Stage primaryStage, Scene loginScene, User user)
 	{
-
+		customer = (Customer) user;
 		// Root Layout as a BorderPane
 		BorderPane root = new BorderPane();
 		// Refeference root for stylization
 		root.getStyleClass().add("app-background");
 
-		// Main Content Area
-		mainContentArea = new StackPane();
-		mainContentArea.setPadding(new Insets(30));
-		root.setCenter(mainContentArea);
+		getMainScene().setPadding(new Insets(30));
+		root.setCenter(getMainScene());
 
 		// Left sidebar
-		VBox sidebar = createSidebar();
+		VBox sidebar = createSidebar("Customer Dashboard", customerNavButtons);
 		root.setLeft(sidebar);
 
 		// The default view
@@ -109,135 +104,6 @@ public class CustomerDashboard
 	}
 
 	/**
-	 * Prupose: Creates the left-hand navigation sidebar with menu items and the
-	 * Logout button.
-	 * 
-	 * @return sidebar VBox with appropriate elements
-	 */
-	private VBox createSidebar()
-	{
-		VBox sidebar = new VBox();
-		sidebar.setPrefWidth(250);
-		sidebar.setPadding(new Insets(20));
-		sidebar.getStyleClass().add("sidebar");
-		sidebar.setSpacing(15);
-
-		// Toggle Group for Navigation
-		ToggleGroup menuGroup = new ToggleGroup();
-
-		// Sidebar's title and styling
-		Label headerLabel = new Label("Customer Dashboard");
-		headerLabel.getStyleClass().add("sidebar-header");
-		VBox.setMargin(headerLabel, new Insets(0, 0, 20, 0));
-
-		// Navigation Buttons in the sidebar
-		catalogButton = createNavButton("Catalog", "catalog", menuGroup);
-
-		purchasesButton = createNavButton("Purchases", "purchases", menuGroup);
-		cartButton = createNavButton("Cart", "cart", menuGroup);
-
-		// Inner layout for the buttons inside a VBox
-		VBox navBox = new VBox(10, headerLabel, catalogButton, purchasesButton,
-				cartButton);
-
-		// TODO: Add functionality to logout
-		// Logout Button
-		Button logoutButton = new Button("Logout");
-		logoutButton.setMaxWidth(Double.MAX_VALUE);
-		logoutButton.getStyleClass().add("logout-button");
-		logoutButton.setOnAction(
-				e -> System.out.println("Logout action triggered."));
-
-		// Structures the Header, NavButtons, Spacer, Logout
-		VBox content = new VBox(navBox, new Region(), logoutButton);
-
-		// Provides an empty space between the sidebar's nav buttons and logout
-		// button, making the spacer grow vertically
-		VBox.setVgrow(content.getChildren().get(1), Priority.ALWAYS);
-		sidebar.getChildren().add(content);
-
-		return sidebar;
-	}
-
-	/**
-	 * Purpose: Helper method to create styled navigation buttons and set their
-	 * action.
-	 * 
-	 * @param text   Button text
-	 * @param viewId ID of the view to switch to
-	 * @param group  ToggleGroup to manage button selection
-	 * @return The created ToggleButton
-	 */
-	private ToggleButton createNavButton(String text, String viewId,
-			ToggleGroup group)
-	{
-
-		ToggleButton button = new ToggleButton(text);
-		button.setToggleGroup(group);
-		button.setMaxWidth(Double.MAX_VALUE);
-		button.getStyleClass().add("nav-button");
-
-		// Action Handler to switch views within the portal
-		button.setOnAction(e -> {
-			if (button.isSelected())
-			{
-				switchToView(viewId);
-			}
-		});
-
-		// Set the default selection for Product Catalog
-		if (viewId.equals("catalog"))
-		{
-			button.setSelected(true);
-		}
-
-		return button;
-	}
-
-	/**
-	 * Purpose: Main function to switch the content displayed in the center
-	 * StackPane.
-	 * 
-	 * @param viewId View ID of the scene to create
-	 */
-	private void switchToView(String viewId)
-	{
-		// Clear current view of the dashboard
-		mainContentArea.getChildren().clear();
-		Region view;
-
-		// Switch statement used to switch between different scenes when called
-		switch (viewId)
-		{
-			case "catalog":
-				view = createCatalogView();
-				break;
-			case "productPage":
-				view = createProductPageView();
-				break;
-			case "purchases":
-				view = createPurchasesView();
-				break;
-			case "cart":
-				view = createCartView();
-				break;
-			case "checkout":
-				view = createCheckoutView();
-				break;
-			case "confirmation":
-				view = createConfirmationView();
-				break;
-			default:
-				view = new Label("View Not Found");
-				break;
-		}
-		mainContentArea.getChildren().add(view);
-
-		// Centers the loaded view at the top of the StackPane
-		StackPane.setAlignment(view, Pos.TOP_CENTER);
-	}
-
-	/**
 	 * Purpose: Renders the Product Inventory view
 	 * 
 	 * @return inventoryLayout The VBox layout for the Catalog view
@@ -257,23 +123,35 @@ public class CustomerDashboard
 		grid.setVgap(20);
 		grid.setPadding(new Insets(20));
 
-		// TODO: Use product.txt data to pull all available products a customer
-		// can buy
-		// Use the custom card creator instead of raw buttons
-		Region productCard1 = GuiUtility.createProductCard("Organic Apples",
-				"3.99", "url1");
-		Region productCard2 = GuiUtility.createProductCard("Fresh Eggs", "5.50",
-				"url2");
-		Region productCard3 = GuiUtility.createProductCard("Microgreens Mix",
-				"8.00", "url3");
-		Region productCard4 = GuiUtility.createProductCard("Pumpkin", "12.50",
-				"url4");
+		List<Product> products = new ArrayList<>(
+				Tester.getInventoryManager().getProductCatalog().values());
 
-		// Place cards into the grid
-		grid.add(productCard1, 0, 0);
-		grid.add(productCard2, 1, 0);
-		grid.add(productCard3, 0, 1);
-		grid.add(productCard4, 1, 1);
+		List<Region> productCards = new ArrayList<>();
+
+		// Creates product cards for products inside products.txt
+		for (Product product : products)
+		{
+			productCards.add(createProductCard(product));
+		}
+
+		// Defines the number of columns in catalog view
+		final int COLUMNS = 3;
+
+		for (int index = 0; index < productCards.size(); index++)
+		{
+			// Calculate the column index (x) using the modulo operator (%)
+			int x = index % COLUMNS;
+
+			// Calculate the row index (y) using integer division (/)
+			int y = index / COLUMNS;
+
+			// Place the card into the grid at the calculated position (x, y)
+			grid.add(productCards.get(index), x, y);
+
+			System.out.println("Placing product at x: " + x + " | y: " + y
+					+ " | Index: " + index);
+		}
+
 		grid.getStyleClass().add("catalog-grid");
 
 		// Table takes up available vertical space
@@ -284,20 +162,6 @@ public class CustomerDashboard
 
 		inventoryLayout.getChildren().addAll(title, catalogStack);
 		return inventoryLayout;
-	}
-
-	/**
-	 * TODO: Fully implement product page view
-	 * Purpose:Placeholder for a single product page view.
-	 * 
-	 * @return productPageLayout
-	 */
-	private Region createProductPageView()
-	{
-		VBox productPageLayout = new VBox(20);
-		productPageLayout.getStyleClass().add("content-card");
-
-		return productPageLayout;
 	}
 
 	/**
@@ -314,20 +178,14 @@ public class CustomerDashboard
 		title.getStyleClass().add("view-title");
 		VBox.setMargin(title, new Insets(0, 0, 10, 0));
 
+		List<Order> orders = Tester.getRepository()
+				.findOrdersByCustomer(customer);
+
 		// --------- Order Items Table ---------
-		TableView<LineItem> itemTable = GuiUtility.createLineItemTable(false);
-		itemTable.setItems(
-				FXCollections.observableArrayList(mockCustomerOrders));
+		TableView<Order> itemTable = createOrdersTable();
+		itemTable.setItems(FXCollections.observableArrayList(orders));
 
-		// --------- Financial Summary Card ---------
-		GridPane summaryGrid = GuiUtility
-				.createFinancialSummary(mockCustomerOrders);
-
-		// Pushes the summary grid to the right side
-		HBox summaryBox = new HBox(new Region(), summaryGrid);
-		HBox.setHgrow(summaryBox.getChildren().get(0), Priority.ALWAYS);
-
-		ordersLayout.getChildren().addAll(title, itemTable, summaryBox);
+		ordersLayout.getChildren().addAll(title, itemTable);
 
 		return ordersLayout;
 	}
@@ -348,9 +206,13 @@ public class CustomerDashboard
 		VBox.setMargin(title, new Insets(0, 0, 10, 0));
 
 		// Create a table that is editable
-		TableView<LineItem> cartTable = GuiUtility.createLineItemTable(true);
+		setCartTable(createLineItemTable(true));
 
-		cartTable.setItems(FXCollections.observableArrayList(mockCartItems));
+		// Pulls customer's cart items
+		getCartTable().setItems(FXCollections
+				.observableArrayList(customer.getCart().getItemMap().values()));
+
+		System.out.println("Cart Items: " + customer.getCart().getItemMap());
 
 		// --- Action Button ---
 		Button checkoutButton = new Button("Proceed to Checkout");
@@ -361,12 +223,12 @@ public class CustomerDashboard
 		buttonContainer.setAlignment(Pos.CENTER_RIGHT);
 
 		// --- Summary Card ---
-		GridPane summaryGrid = GuiUtility.createFinancialSummary(mockCartItems);
+		GridPane summaryGrid = createFinancialSummary();
 		// Pushes the summary grid to the right side of the view
 		HBox summaryBox = new HBox(new Region(), summaryGrid);
 		HBox.setHgrow(summaryBox.getChildren().get(0), Priority.ALWAYS);
 
-		cartLayout.getChildren().addAll(title, cartTable, summaryBox,
+		cartLayout.getChildren().addAll(title, getCartTable(), summaryBox,
 				buttonContainer);
 		return cartLayout;
 	}
@@ -387,20 +249,21 @@ public class CustomerDashboard
 		title.getStyleClass().add("view-title");
 
 		// --------- Order Summary Table ---------
-		TableView<LineItem> orderSummaryTable = GuiUtility
-				.createLineItemTable(false);
-		orderSummaryTable
-				.setItems(FXCollections.observableArrayList(mockCartItems));
+		TableView<LineItem> orderSummaryTable = createLineItemTable(false);
+		orderSummaryTable.setItems(FXCollections
+				.observableArrayList(customer.getCart().getItemMap().values()));
 		orderSummaryTable.setPrefHeight(150);
 
 		// --------- Payment Method Selector ---------
 		Label paymentLabel = new Label("Payment Method:");
 		paymentLabel.getStyleClass().add("section-header");
 
+		PaymentList payList = new PaymentList();
+		payList.registerProcessor("Cash on Pickup", new CashPickupProcessor());
+
 		// Dropdown for selecting payment method
 		ComboBox<String> paymentMethod = new ComboBox<>(
-				FXCollections.observableArrayList("Cash on Pickup",
-						"Credit Card", "PayPal"));
+				FXCollections.observableArrayList("Cash on Pickup", " "));
 		paymentMethod.getStyleClass().add("form-input");
 		paymentMethod.getSelectionModel().selectFirst();
 
@@ -409,23 +272,76 @@ public class CustomerDashboard
 		VBox.setMargin(paymentBox, new Insets(10, 0, 10, 0));
 
 		// Summary and Place Order Button in a vertical column
-		GridPane summaryGrid = GuiUtility.createFinancialSummary(mockCartItems);
+		GridPane summaryGrid = createFinancialSummary();
 
+		// Sets default selected method
+		selectedMethod = "Cash on Pickup";
+
+		// Handles payment method selection
+		paymentMethod.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldValue, newValue) -> {
+					// Check if newValue is not null
+					if (newValue != null)
+					{
+
+						// Update the variable/object with the new value
+						selectedMethod = newValue;
+
+						System.out.println("Payment method updated from "
+								+ oldValue + " to " + newValue);
+					}
+				});
 		// --------- Place Order Button ---------
 		Button placeOrderButton = new Button("Place Order");
 		placeOrderButton.getStyleClass().addAll("save-button", "big-button",
 				"place-order-button");
+
+		// Sets action handler for placing order
 		placeOrderButton.setOnAction(e -> {
-			// Logic: Submit order, then go to confirmation
-			switchToView("confirmation");
+			// Pulls cart data to retrieve grand total
+			// TODO: Most likely can avoid this call
+			ObservableList<LineItem> items = getCartTable().getItems();
+			// Calculate totals based on the current items
+			double subtotal = items.stream().mapToDouble(LineItem::getTotal)
+					.sum();
+			double taxAmount = subtotal * getTaxRate();
+			double discount = subtotal > 100 ? 5.00 : 0.00;
+			double shipping = 0.00;
+			double grandTotal = subtotal + taxAmount - discount + shipping;
+
+			// Creates payment detail object entered by customer
+			PaymentDetail detail = new PaymentDetail(grandTotal,
+					payList.getProcessor(selectedMethod), customer);
+
+			// Creates order manager to prep order placement
+			orderManager = new OrderManager(Tester.getInventoryManager(),
+					detail.getPaymentMethod());
+
+			// Handles order placement
+			try
+			{
+				// newOrder holds a reference to the order.
+				newOrder = orderManager.placeOrder(customer, customer.getCart(),
+						detail);
+
+				// Switches to confirmation view if order was successful
+				switchToView("confirmation");
+
+			}
+			catch (InsufficientStockException e1)
+			{
+				System.err.println(
+						"FAIL: Successful order threw unexpected exception: "
+								+ e1.getMessage());
+			}
+
 		});
 
 		// Structure Summary and Button in a VBox
 		VBox summaryAndButton = new VBox(15, summaryGrid, placeOrderButton);
 		summaryAndButton.setAlignment(Pos.TOP_RIGHT);
 
-		// Place elements in main layout (Table/Payment on Left, Summary/Button
-		// on Right)
+		// Place elements in main layout
 		HBox mainContent = new HBox(40);
 		mainContent.setAlignment(Pos.TOP_LEFT);
 		mainContent.getChildren().addAll(
@@ -454,8 +370,8 @@ public class CustomerDashboard
 				"-fx-text-fill: " + darkColor + "; -fx-font-size: 30px;");
 
 		// TODO: Populate with real Order ID number (transactionId)
-		Label thankYou = new Label("Order ID: " + "11010");
-		thankYou.setStyle("-fx-font-size: 20px; -fx-text-fill: #666666;");
+		Label thankYou = new Label("Order ID: " + newOrder.getOrderId());
+		thankYou.setStyle("-fx-font-size: 20px; -fx-text-fill: #777777;");
 
 		Label emailConfirmation = new Label(
 				"A confirmation and pickup instructions have been sent to your email.");
@@ -474,15 +390,13 @@ public class CustomerDashboard
 		continueShoppingButton.getStyleClass().addAll("nav-button",
 				"big-button");
 		continueShoppingButton.setOnAction(e -> {
-			catalogButton.setSelected(true);
-			switchToView("catalog");
+			selectNavButton("catalog");
 		});
 
 		Button viewPurchasesButton = new Button("View Purchases");
 		viewPurchasesButton.getStyleClass().addAll("save-button", "big-button");
 		viewPurchasesButton.setOnAction(e -> {
-			purchasesButton.setSelected(true);
-			switchToView("purchases");
+			selectNavButton("purchases");
 		});
 
 		HBox buttonBar = new HBox(20, continueShoppingButton,
@@ -494,6 +408,50 @@ public class CustomerDashboard
 				emailConfirmation, pickupNote, buttonBar);
 
 		return confirmationLayout;
+	}
+
+	@Override
+	protected Region createSpecificView(String viewId, Product product)
+	{
+		Region view;
+		switch (viewId)
+		{
+			case "productPage":
+				view = createProductPageView(product);
+				break;
+			default:
+				view = new Label("View Not Found");
+				break;
+		}
+		return view;
+	}
+
+	@Override
+	protected Region createSpecificView(String viewId)
+	{
+		Region view;
+		switch (viewId)
+		{
+			case "catalog":
+				view = createCatalogView();
+				break;
+			case "purchases":
+				view = createPurchasesView();
+				break;
+			case "cart":
+				view = createCartView();
+				break;
+			case "checkout":
+				view = createCheckoutView();
+				break;
+			case "confirmation":
+				view = createConfirmationView();
+				break;
+			default:
+				view = new Label("View Not Found");
+				break;
+		}
+		return view;
 	}
 
 }

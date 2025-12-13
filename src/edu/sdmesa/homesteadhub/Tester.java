@@ -14,7 +14,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of Tetser is to test classes from our HomesteadHub
  *          project.
@@ -371,6 +371,7 @@ public class Tester
 	{
 		// Save the Product
 		repository.saveProduct(carrotProduct);
+		repository.saveProduct(appleProduct);
 
 		System.out.println("Farmer: " + farmer.getUsername());
 		System.out.println("Farmer ID: " + farmer.getUserId());
@@ -674,11 +675,22 @@ public class Tester
 	}
 
 	/**
-	 * Purpose: Public static getter for the repository, allowing the GUI to access it. TESTING ONLY
+	 * Purpose: Public static getter for the repository, allowing the GUI to
+	 * access it. TESTING ONLY
 	 */
 	public static DataRepository getRepository()
 	{
 		return repository;
+	}
+
+	/**
+	 * Purpose: Returns Tester's inventory manager. USed for TESTING PURPOSES 
+	 * @return
+	 */
+	public static InventoryManager getInventoryManager()
+	{
+		return inventoryManager;
+
 	}
 
 }

@@ -12,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of PaymentList is to hold our payment processors.
  *          For now, it's only CashPickupProcessor, but if I choose to add more,
@@ -58,5 +58,15 @@ public class PaymentList
 					+ paymentMethod + "' is not supported by the Factory.");
 		}
 		return processor;
+	}
+
+	/**
+	 * Purpose: Returns a list of registered processors
+	 * 
+	 * @return processors Map<String, PaymentProcessor>
+	 */
+	public Map<String, PaymentProcessor> getProcessors()
+	{
+		return this.processors;
 	}
 }

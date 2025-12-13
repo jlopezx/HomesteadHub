@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of LoginDashboard is to provide a starting point
  *          for the application and allows the user to login.
@@ -31,7 +31,7 @@ public class LoginDashboard extends Application
 	private PortalManager portalManager = new PortalManager(
 			Tester.getRepository());
 	private User loggedInUser = null;
-	
+
 	// UI Components
 	private Stage primaryStage;
 	private Scene loginScene;
@@ -82,12 +82,12 @@ public class LoginDashboard extends Application
 		passwordField.setPromptText("Password");
 		passwordField.setStyle(
 				"-fx-background-radius:50; -fx-prompt-text-fill: #69b27c; -fx-font-weight: bold;");
-		
+
 		// Create login button and stylize
 		Button loginButton = new Button("Login");
 		loginButton.setStyle(
 				"-fx-background-color: #427a8c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 50;");
-		
+
 		// Action handler to handle login
 		loginButton.setOnAction(e -> handleLogin());
 
@@ -129,10 +129,11 @@ public class LoginDashboard extends Application
 				Farmer farmer = (Farmer) loggedInUser;
 
 				// Create new FarmerDashboard instance
-				FarmerDashboard dashboard = new FarmerDashboard();
+				FarmerDashboard dashboard = new FarmerDashboard(primaryStage,
+						loginScene, farmer);
 
 				// Transition to farmer dashboard scene
-				dashboard.startFarmerDashboard(primaryStage, farmer);
+				dashboard.startDashboard(primaryStage, loginScene, farmer);
 
 			}
 			// If user is a Customer account type, take this branch
@@ -145,10 +146,11 @@ public class LoginDashboard extends Application
 						"Successfully logged in as: " + customer.getUsername());
 
 				// Create new CustomerDashboard instance
-				CustomerDashboard dashboard = new CustomerDashboard();
+				CustomerDashboard dashboard = new CustomerDashboard(
+						primaryStage, loginScene, customer);
 
 				// Transition to customer dashboard scene
-				dashboard.startCustomerDashboard(primaryStage, customer);
+				dashboard.startDashboard(primaryStage, loginScene, customer);
 
 			}
 			else

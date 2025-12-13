@@ -11,7 +11,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-12
  * 
  * @Purpose This interface sets the rules for all data persistence operations.
  * 
@@ -90,6 +90,12 @@ public interface DataRepository
 	 * @return A list containing all Products supplied by the specified Farmer.
 	 */
 	List<Product> findAllProducts(Farmer farmer);
+
+	/**
+	 * Purpose:  Retrieves ALL Products
+	 * @return A list containing all products on platform
+	 */
+	List<Product> findAllProducts();
 
 	// ------Order Operations------
 

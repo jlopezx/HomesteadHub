@@ -12,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose Manages the business logic for placing an order,
  *          coordinating inventory management and payment processing.
@@ -68,7 +68,7 @@ public class OrderManager
 			// quanity with items in the cart
 			Product product = inventoryManager.getProduct(item.getSku());
 
-			// Check if product exists or if there's enough product stocl for
+			// Check if product exists or if there's enough product stock for
 			// requested quantity in cart
 			if (product == null
 					|| product.getStockQuantity() < item.getQuantity())
@@ -103,6 +103,11 @@ public class OrderManager
 		// Convert map values to list
 		Order newOrder = new Order(customer, List.copyOf(items.values()),
 				subtotal, customer.getShippingAddress(), result);
+
+		// Saves order to repository
+		// TODO: Need to change this
+		Tester.getRepository().saveOrder(newOrder);
+		System.out.println("ORDER MANAGER: Order saved");
 
 		System.out.printf(
 				"ORDER MANAGER: Order %s placed successfully. Status: %s.%n",

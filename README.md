@@ -32,3 +32,5 @@ HomesteadHub is a Java application designed to connect local farmers (producers)
 >**Week 5** - This week is all about the inventory system. The goal is to have the customer add items to their cart, and checkout. The OrderManager is going to facilitate the transaction using the PaymentProcessor. Based on the payment method, which is just only pickup at this point. Once an order is made, inventory is updated. 
 
 >**Week 6** - Looks, looks, looks. This week is all about building the GUI and achieving an asetheically pleasing layout. The goal is to craft similar to the mockup, but with limited time, it will not look exacly like the mockup, but definitely similar.
+
+>**Week 7** - The main focus of this week was to connect data from the repository into the GUI elements. CustomerDashboard is complete but FarmerDashboard still needs work.

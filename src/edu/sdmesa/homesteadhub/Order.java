@@ -14,7 +14,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  *
  * @Purpose The reponsibility of Order is to represent a placed Order.
  */
@@ -32,6 +32,7 @@ public class Order
 	// Order owns its LineItems.
 	private final List<LineItem> items;
 	private String status; // Set with "PENDING_PICKUP", "SHIPPED", "CANCELLED"
+
 	/**
 	 * Constructor for Order. DESERIALIZATION CONSTRUCTOR
 	 * 
@@ -53,6 +54,7 @@ public class Order
 		this.status = status;
 
 	}
+
 	/**
 	 * Constructor for Order.
 	 * 
@@ -100,7 +102,7 @@ public class Order
 	 */
 	public String getOrderId()
 	{
-		return orderId;
+		return this.orderId;
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class Order
 	 */
 	public Customer getCustomer()
 	{
-		return customer;
+		return this.customer;
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class Order
 	 */
 	public List<LineItem> getItems()
 	{
-		return items;
+		return this.items;
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class Order
 	 */
 	public Date getOrderDate()
 	{
-		return orderDate;
+		return this.orderDate;
 	}
 
 	/**
@@ -140,7 +142,7 @@ public class Order
 	 */
 	public double getTotalAmount()
 	{
-		return totalAmount;
+		return this.totalAmount;
 	}
 
 	/**
@@ -150,7 +152,7 @@ public class Order
 	 */
 	public String getShippingAddress()
 	{
-		return shippingAddress;
+		return this.shippingAddress;
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class Order
 	 */
 	public String getStatus()
 	{
-		return status;
+		return this.status;
 	}
 
 	/**
@@ -172,9 +174,10 @@ public class Order
 	{
 		this.status = status;
 	}
-	
+
 	/**
-	 * Purpose: Getter - Returns the PaymentResult that holds all order information
+	 * Purpose: Getter - Returns the PaymentResult that holds all order
+	 * information
 	 * 
 	 * @return result Final payment details
 	 */

@@ -10,7 +10,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose A concrete implementation of the PaymentProcessor interface that
  *          handles transactions for "Cash on Pickup" orders.
@@ -55,6 +55,6 @@ public class CashPickupProcessor implements PaymentProcessor
 	@Override
 	public String getPaymentType()
 	{
-		return "CashOnPickUp";
+		return "Cash on Pickup";
 	}
 }

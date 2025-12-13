@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-12
  * 
  * @Purpose The reponsibility of LineItem is to represent a single line entry in
  *          a Cart or an Order.
@@ -20,7 +20,8 @@ public class LineItem
 {
 	private Product product; // LineItem has-a Product
 	private int quantity; // The amount of product ordered
-	private final double unitPrice; // Price captured at the time of creation/checkout
+	private final double unitPrice; // Price captured at the time of
+									// creation/checkout
 	private String sku;
 	private String title;
 	private double total;
@@ -35,20 +36,24 @@ public class LineItem
 	{
 		this.sku = product.getSku();
 		this.product = product;
+		this.title = product.getTitle();
 		this.quantity = quantity;
 		this.unitPrice = product.getUnitPrice();
+		this.total = calculateLineTotal();
 	}
 
 	/**
 	 * 
 	 * Purpose: TEST CONSTRUCTOR TO BUILD MOCK DATA FOR GUI CREATION
+	 * 
 	 * @param sku
 	 * @param title
 	 * @param qty
 	 * @param price
 	 * @param total
 	 */
-	public LineItem(String sku, String title, int qty, double price, double total)
+	public LineItem(String sku, String title, int qty, double price,
+			double total)
 	{
 		this.sku = sku;
 		this.title = title;
@@ -79,7 +84,7 @@ public class LineItem
 	 */
 	public Product getProduct()
 	{
-		return product;
+		return this.product;
 	}
 
 	/**
@@ -89,7 +94,7 @@ public class LineItem
 	 */
 	public int getQuantity()
 	{
-		return quantity;
+		return this.quantity;
 	}
 
 	/**
@@ -99,7 +104,7 @@ public class LineItem
 	 */
 	public double getUnitPrice()
 	{
-		return unitPrice;
+		return this.unitPrice;
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class LineItem
 	{
 		this.quantity = quantity;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns the sku
 	 * 
@@ -121,7 +126,7 @@ public class LineItem
 	{
 		return this.sku;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns title of product
 	 * 
@@ -131,7 +136,7 @@ public class LineItem
 	{
 		return this.title;
 	}
-	
+
 	/**
 	 * Purpose: Getter - Returns total purchase amount
 	 * 
@@ -139,6 +144,7 @@ public class LineItem
 	 */
 	public double getTotal()
 	{
+		this.total = calculateLineTotal();
 		return this.total;
 	}
 }
