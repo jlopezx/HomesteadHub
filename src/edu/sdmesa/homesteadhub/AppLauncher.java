@@ -11,7 +11,7 @@ import javafx.application.Application;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-18
  * 
  * @Purpose A utility class to launch the JavaFX application
  *          without requiring the Tester class to extend Application.
@@ -20,8 +20,24 @@ import javafx.application.Application;
 public class AppLauncher
 {
 
+	public static void main(String[] args)
+	{
+		AppInitializer.initialize(AppInitializer.getRepository(),
+				AppInitializer.getInventoryManager());
+		AppInitializer.userCreation();
+
+		// To start with a clean application, comment out the 3 lines below to
+		// ommit test data and purge the 4 data files
+		Tester.startTester();
+		AppInitializer.initialize(Tester.getRepository(),
+				Tester.getInventoryManager());
+
+		// This will launch the JavaFX runtime and display the Login window.
+		AppLauncher.launchApp(args);
+	}
+
 	/**
-	 * Launches the main JavaFX application.
+	 * Purpose: Launches the main JavaFX application.
 	 * 
 	 * @param args Command line arguments (passed to Application.launch)
 	 */

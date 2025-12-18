@@ -11,7 +11,7 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of User is to serve as the base class for all
  *          users of the HomesteadHub app.
@@ -87,8 +87,8 @@ public abstract class User
 	/**
 	 * Purpose: Getter - Returns the stored plaintext password.
 	 * 
-	 * TODO: For now, we're storing plaintext for testing and impleneting
-	 * Will look into hashing password later down the road.
+	 * @implNote Storing plaintext is never used in production environements. This is
+	 * mainly used for testing and demo purposes.
 	 * 
 	 * @return password String representing the user's password.
 	 */

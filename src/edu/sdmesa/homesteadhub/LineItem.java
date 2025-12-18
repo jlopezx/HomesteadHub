@@ -9,7 +9,7 @@ package edu.sdmesa.homesteadhub;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of LineItem is to represent a single line entry in
  *          a Cart or an Order.
@@ -25,6 +25,10 @@ public class LineItem
 	private String sku;
 	private String title;
 	private double total;
+
+	private String orderId = null;
+	private String customer = null;
+	private String farmer = null;
 
 	/**
 	 * Constructor for LineItem.
@@ -60,6 +64,31 @@ public class LineItem
 		this.quantity = qty;
 		this.unitPrice = price;
 		this.total = total;
+	}
+
+	/**
+	 * Purpose: Constructor for LineItem. DESERIALIZATION CONSTRUCTOR
+	 * 
+	 * @param orderId  The unique ID for the order.
+	 * @param sku      The unique ID of the product.
+	 * @param title    The title of the product.
+	 * @param qty      The total amount of product purchased.
+	 * @param price    The base unit price.
+	 * @param total    The total amount of product purchased.
+	 * @param customer The Customer username who placed the order.
+	 * @param farmer   The supplier username who sells the product.
+	 */
+	public LineItem(String orderId, String sku, String title, int qty,
+			double price, double total, String customer, String farmer)
+	{
+		this.orderId = orderId;
+		this.sku = sku;
+		this.title = title;
+		this.quantity = qty;
+		this.unitPrice = price;
+		this.total = total;
+		this.customer = customer;
+		this.farmer = farmer;
 	}
 
 	/**
@@ -146,5 +175,37 @@ public class LineItem
 	{
 		this.total = calculateLineTotal();
 		return this.total;
+	}
+
+	/**
+	 * Purpose: Getter - Returns customer's username
+	 * 
+	 * @return customer Customer's username
+	 */
+	public String getCustomer()
+	{
+		return this.customer;
+	}
+
+	/**
+	 * Purpose: Getter - Returns farmer's username
+	 * 
+	 * @return farmer Farmer's username
+	 */
+	public String getFarmer()
+	{
+		return this.farmer;
+	}
+
+	/**
+	 * Purpose: Getter - Returns order ID of this line item. Remember, line
+	 * items are for each individual product while orders are a group of line
+	 * items with an overall total
+	 * 
+	 * @return orderId The order ID of the line item
+	 */
+	public String getOrderId()
+	{
+		return this.orderId;
 	}
 }

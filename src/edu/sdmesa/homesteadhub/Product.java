@@ -11,12 +11,12 @@ import java.util.UUID;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of Product is to represent an item for sale in the
  *          catalog.
  */
-public abstract class Product
+public class Product
 {
 	private final String sku; // Stock Keeping Unit - unique ID
 	private String title; // Name of the product
@@ -25,6 +25,7 @@ public abstract class Product
 	private String farmerUsername;
 	private double unitPrice; // Base price of the product
 	private String description;
+	private String photoUri;
 
 	/**
 	 * Constructor for Product used when a SKU is provided.
@@ -50,7 +51,7 @@ public abstract class Product
 
 	/**
 	 * Purpose: Constructor for Product used when a SKU is provided. Used for
-	 * finding ALL products.
+	 * finding ALL products in Helper class.
 	 * Mainly used for DESERIALIZATION/LOADING.
 	 * 
 	 * @param sku            The unique product identifier.
@@ -81,22 +82,15 @@ public abstract class Product
 	 * @param unitPrice       The price per unit/item.
 	 */
 	protected Product(String title, int stockQuantity, Farmer farmer,
-			double unitPrice)
+			double unitPrice, String description)
 	{
 		this.sku = UUID.randomUUID().toString();
 		this.title = title;
 		this.stockQuantity = stockQuantity;
 		this.farmer = farmer;
 		this.unitPrice = unitPrice;
+		this.description = description;
 	}
-
-	/**
-	 * Abstract method to calculate the price. Pricing differs for Simple vs
-	 * Bundle products.
-	 * 
-	 * @return The final unit price of the product.
-	 */
-	public abstract double calculatePrice();
 
 	/**
 	 * Method to get a get description
@@ -204,5 +198,35 @@ public abstract class Product
 	public void setUnitPrice(double unitPrice)
 	{
 		this.unitPrice = unitPrice;
+	}
+
+	/**
+	 * Calculates the price for a Product, which is just its unit price.
+	 * 
+	 * @return The unit price.
+	 */
+	public double calculatePrice()
+	{
+		return getUnitPrice();
+	}
+	
+	/**
+	 * Purpose: Getter - Returns Photo location of product.
+	 * 
+	 * @return photoUri Path to product photo
+	 */
+	public String getPhotoUri()
+	{
+		return this.photoUri;
+	}
+	
+	/**
+	 * Purpose: Setter - Sets photo uri for product.
+	 * 
+	 * @param uri Photo path used for this product
+	 */
+	public void setPhotoUri(String uri)
+	{
+		this.photoUri = uri;
 	}
 }

@@ -4,11 +4,11 @@
 
 .sidebar {
     -fx-background-color: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 6, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.1), 10.0, 0.0, 6.0, 0.0);
 }
 
 .sidebar-header {
-    -fx-font-size: 20px;
+    -fx-font-size: 20.0px;
     -fx-font-weight: bold;
     -fx-text-fill: #2D6A4F;
 }
@@ -17,8 +17,8 @@
     -fx-background-color: transparent;
     -fx-text-fill: #2D6A4F;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
-    -fx-background-radius: 8px;
+    -fx-font-size: 14.0px;
+    -fx-background-radius: 8.0px;
 }
 
 .nav-button:hover {
@@ -29,12 +29,12 @@
 .nav-button:selected {
     -fx-background-color: #52B788;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 2, 2);
+    -fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.15), 5.0, 0.0, 2.0, 2.0);
 }
 
 .big-button {
-    -fx-padding: 10px 20px;
-    -fx-font-size: 16px;
+    -fx-padding: 10.0px 20.0px;
+    -fx-font-size: 16.0px;
     -fx-font-weight: bold;
 }
 
@@ -42,7 +42,7 @@
     -fx-background-color: #E0E0E0;
     -fx-text-fill: #555555;
     -fx-font-weight: bold;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 8.0px;
 }
 
 .logout-button:hover {
@@ -52,20 +52,20 @@
 
 .content-card {
     -fx-background-color: white;
-    -fx-background-radius: 12px;
-    -fx-padding: 20px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 4, 4);
-    -fx-max-width: 900px;
-    -fx-min-width: 600px;
+    -fx-background-radius: 12.0px;
+    -fx-padding: 20.0px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.08), 10.0, 0.0, 4.0, 4.0);
+    -fx-max-width: 900.0px;
+    -fx-min-width: 600.0px;
 }
 
 .view-title {
-    -fx-font-size: 28px;
+    -fx-font-size: 28.0px;
     -fx-font-weight: bold;
     -fx-text-fill: #2D6A4F;
-    -fx-padding: 0 0 15px 0;
+    -fx-padding: 0.0 0.0 15.0px 0.0;
     -fx-border-color: #EEEEEE;
-    -fx-border-width: 0 0 1px 0;
+    -fx-border-width: 0.0 0.0 1.0px 0.0;
 }
 
 .product-table .column-header, .order-table .column-header {
@@ -76,7 +76,7 @@
 
 .product-table .column-header-background, .order-table .column-header-background {
     -fx-background-color: #2D6A4F;
-    -fx-background-radius: 5px 5px 0 0;
+    -fx-background-radius: 5.0px 5.0px 0.0 0.0;
 }
 
 .product-table .table-row-cell:filled:odd, .order-table .table-row-cell:filled:odd {
@@ -89,11 +89,11 @@
 
 .fab-button {
     -fx-background-color: #52B788;
-    -fx-background-radius: 50;
+    -fx-background-radius: 50.0;
     -fx-text-fill: white;
-    -fx-font-size: 36px;
-    -fx-padding: 5px 15px 5px 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 4, 4);
+    -fx-font-size: 36.0px;
+    -fx-padding: 5.0px 20.0px 5.0px 20.0px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.3), 5.0, 0.0, 2.0, 2.0);
 }
 
 .fab-button:hover {
@@ -102,28 +102,28 @@
 
 .summary-card {
     -fx-background-color: #F9F9F9;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px;
+    -fx-background-radius: 8.0px;
+    -fx-padding: 10.0px;
     -fx-border-color: #E0E0E0;
-    -fx-border-radius: 8px;
-    -fx-border-width: 1px;
+    -fx-border-radius: 8.0px;
+    -fx-border-width: 1.0px;
 }
 
 .summary-label {
     -fx-font-weight: normal;
     -fx-text-fill: #555555;
-    -fx-padding: 4px 0 4px 10px;
+    -fx-padding: 4.0px 0.0 4.0px 10.0px;
 }
 
 .summary-value {
     -fx-font-weight: normal;
-    -fx-padding: 4px 10px 4px 0;
+    -fx-padding: 4.0px 10.0px 4.0px 0.0;
     -fx-alignment: CENTER-RIGHT;
 }
 
 .subtotal-bar, .grandtotal-bar {
-    -fx-background-radius: 4px;
-    -fx-padding: 5px 0 5px 0;
+    -fx-background-radius: 4.0px;
+    -fx-padding: 5.0px 0.0 5.0px 0.0;
 }
 
 .subtotal-bar {
@@ -138,7 +138,7 @@
 .grandtotal-bar .summary-label, .grandtotal-bar .summary-value {
     -fx-font-weight: bold;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 16.0px;
 }
 
 .discount .summary-value {
@@ -146,30 +146,30 @@
 }
 
 .form-input, .form-textarea {
-    -fx-background-radius: 6px;
+    -fx-background-radius: 6.0px;
     -fx-border-color: #CCCCCC;
-    -fx-border-radius: 6px;
-    -fx-padding: 8px;
+    -fx-border-radius: 6.0px;
+    -fx-padding: 8.0px;
 }
 
 .image-placeholder {
     -fx-background-color: #F0F0F0;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 8.0px;
     -fx-border-color: #AAAAAA;
     -fx-border-style: dashed;
-    -fx-border-width: 2px;
-    -fx-min-width: 130px;
-    -fx-min-height: 130px;
-    -fx-font-size: 40px;
+    -fx-border-width: 2.0px;
+    -fx-min-width: 130.0px;
+    -fx-min-height: 130.0px;
+    -fx-font-size: 40.0px;
 }
 
 .save-button {
     -fx-background-color: #2D6A4F;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 16px;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px 40px;
+    -fx-font-size: 16.0px;
+    -fx-background-radius: 8.0px;
+    -fx-padding: 10.0px 40.0px;
 }
 
 .save-button:hover {
@@ -179,11 +179,11 @@
 .quantity-control-button {
     -fx-background-color: #2D6A4F;
     -fx-text-fill: white;
-    -fx-min-width: 20px;
-    -fx-max-width: 20px;
-    -fx-padding: 2px;
+    -fx-min-width: 20.0px;
+    -fx-max-width: 20.0px;
+    -fx-padding: 2.0px;
     -fx-font-weight: bold;
-    -fx-background-radius: 4px;
+    -fx-background-radius: 4.0px;
 }
 
 .quantity-control-button:hover {
@@ -199,10 +199,16 @@
 }
 
 .product-card {
-    -fx-background-color: white;
-    -fx-padding: 15px;
-    -fx-background-radius: 10px;
+    -fx-background-color: #427a8c;
+    -fx-padding: 15.0px;
+    -fx-background-radius: 10.0px;
     -fx-border-color: #EEE;
-    -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 2, 2);
+    -fx-border-width: 1.0px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.05), 5.0, 0.0, 2.0, 2.0);
+    -fx-min-width: 15em;
 }
+
+.placeholder-label, .product-name, .product-price {
+	-fx-text-fill: #FFF
+}
+

@@ -34,3 +34,5 @@ HomesteadHub is a Java application designed to connect local farmers (producers)
 >**Week 6** - Looks, looks, looks. This week is all about building the GUI and achieving an asetheically pleasing layout. The goal is to craft similar to the mockup, but with limited time, it will not look exacly like the mockup, but definitely similar.
 
 >**Week 7** - The main focus of this week was to connect data from the repository into the GUI elements. CustomerDashboard is complete but FarmerDashboard still needs work.
+
+>**Week 8** - Final week for this course. This week is the final submission, and there was a focus on pulling and integrating data for both Customer and Farmer user accounts as well as populating the data on the GUI. While there are still bugs, this final submission serves as a strong proof of concept.

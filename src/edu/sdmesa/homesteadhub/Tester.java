@@ -14,7 +14,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of Tetser is to test classes from our HomesteadHub
  *          project.
@@ -41,7 +41,10 @@ public class Tester
 	private static Product appleProduct;
 	private static Product carrotProduct;
 
-	public static void main(String[] args)
+	/**
+	 * Purpose: Main method to start the tester
+	 */
+	public static void startTester()
 	{
 
 		System.out.println("##### HomesteadHub Week 2 Tests #####");
@@ -78,7 +81,7 @@ public class Tester
 
 		System.out.println("##### Week 5 Tests START #####");
 
-		// TODO: PaymentDetail needs a Payment and customer. The idea is when a
+		// PaymentDetail needs a Payment and customer. The idea is when a
 		// customer places an order,
 		// Customer and PaymentDetail is already known
 
@@ -115,8 +118,7 @@ public class Tester
 		System.out.println("\n##### Week 5 Tests COMPLETE #####");
 
 		System.out.println("\n##### LAUNCHING HOMESTEAD HUB GUI #####");
-		// This will launch the JavaFX runtime and display the Login window.
-		AppLauncher.launchApp(args);
+	
 	}
 
 	// ----------------User Creation Test Function----------------
@@ -146,7 +148,7 @@ public class Tester
 		System.out.println("\n-----Testing Product Creation-----");
 
 		// SimpleProduct(sku, title, initialStock, supplier, price)
-		appleProduct = new SimpleProduct("APPLE1", "Apples",
+		appleProduct = new Product("APPLE1", "Apples",
 				"Gala Apples (5lb)", 100, farmer, 9.99);
 
 		// Add Product to InventoryManager
@@ -248,10 +250,11 @@ public class Tester
 		new File("users.txt").delete();
 		new File("products.txt").delete();
 		new File("orders.txt").delete();
+		new File("lineitems.txt").delete();
 
 		// Testing new SimpleProduct class. Creates new product based on the
 		// farmer
-		carrotProduct = new SimpleProduct("Carrots", 50, farmer, 3.99);
+		carrotProduct = new Product("Carrots", 50, farmer, 3.99, "Yummy carrots");
 
 		// Adds a product to a LineItem list to simulate a listed item a
 		// customer can buy
@@ -530,9 +533,9 @@ public class Tester
 		System.out.println("\n--- Initializing Setup Data ---");
 
 		// Initial Stock: 100 apples, 50 carrots
-		appleProduct = new SimpleProduct("APPLE1", "Apples",
+		appleProduct = new Product("APPLE1", "Apples",
 				"Gala Apples (5lb)", 100, farmer, 9.99);
-		carrotProduct = new SimpleProduct("CARROT2", "Carrots",
+		carrotProduct = new Product("CARROT2", "Carrots",
 				"Organic Carrots (1lb)", 50, farmer, 3.99);
 
 		// Load products into InventoryManager catalog

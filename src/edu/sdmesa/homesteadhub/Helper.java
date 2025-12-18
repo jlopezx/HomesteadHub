@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of Helper is to provid helper methods for
  *          converting domain objects (User, Product, Order) to and from their
@@ -96,14 +96,10 @@ public class Helper
 	 */
 	public String serializeProduct(Product product)
 	{
-		if (product instanceof SimpleProduct)
-		{
-			SimpleProduct sp = (SimpleProduct) product;
-			return String.format("SIMPLE,%s,%s,%s,%d,%.2f,%s", sp.getSku(),
-					sp.getTitle(), sp.getDescription(), sp.getStockQuantity(),
-					sp.calculatePrice(), sp.getFarmer().getUsername());
-		}
-		return null;
+
+		return String.format("SIMPLE,%s,%s,%s,%d,%.2f,%s", product.getSku(),
+				product.getTitle(), product.getDescription(), product.getStockQuantity(),
+				product.calculatePrice(), product.getFarmer().getUsername());
 	}
 
 	/**
@@ -132,7 +128,7 @@ public class Helper
 		String farmer = parts[6];
 		if (type.equals("SIMPLE"))
 		{
-			return new SimpleProduct(sku, title, description, stock, farmer,
+			return new Product(sku, title, description, stock, farmer,
 					price);
 		}
 		else
@@ -168,7 +164,7 @@ public class Helper
 		// parts[6] is the Farmer ID. Not needed right now
 		if (type.equals("SIMPLE"))
 		{
-			return new SimpleProduct(sku, title, description, stock, farmer,
+			return new Product(sku, title, description, stock, farmer,
 					price);
 		}
 		else
@@ -217,4 +213,51 @@ public class Helper
 		return new Order(orderId, customer, new ArrayList<>(), total,
 				customer.getShippingAddress(), status);
 	}
+
+	/**
+	 * Purpose: Converts an LineItem object into a storable string format.
+	 * 
+	 * @param order Order object LineItem is apart of
+	 * @param lineItem Individual line item to read from
+	 * @return Serialized LineItem String 
+	 */
+	public String serializeLineItem(Order order, LineItem lineItem)
+	{
+		return String.format("%s,%s,%s,%d,%.2f,%.2f,%s,%s", order.getOrderId(),
+				lineItem.getSku(), lineItem.getTitle(), lineItem.getQuantity(),
+				lineItem.getUnitPrice(), lineItem.getTotal(),
+				order.getCustomer().getUsername(),
+				lineItem.getProduct().getFarmer().getUsername());
+	}
+
+	/**
+	 * Purpose: Restores String data back into LineItem objects. These are itemized orders per product.
+	 * 
+	 * @param data Data to read string data from
+	 * 
+	 * @return Restored LineItem object
+	 */
+	public LineItem deserializeLineItem(String data)
+	{
+		String[] parts = data.split(",");
+
+		// Provides a layer of security to make sure we're not reading from an
+		// invalid line
+		if (parts.length < 8) return null;
+
+		// Parses line items parts needed for Farmer Orders
+		String orderId = parts[0];
+		String sku = parts[1];
+		String title = parts[2];
+		int qty = Integer.parseInt(parts[3]);
+		double unitPrice = Double.parseDouble(parts[4]);
+		double total = Double.parseDouble(parts[5]);
+		String customer = parts[6];
+		String farmer = parts[7];
+
+		return new LineItem(orderId, sku, title, qty, unitPrice, total,
+				customer, farmer);
+
+	}
+
 }

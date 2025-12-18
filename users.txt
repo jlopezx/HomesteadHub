@@ -1,2 +1,0 @@
-Customer,2e25197f-e503-4a93-b31f-112ef4e47428,Josh,1234,josh@test.com,123 Test St, Black Mesa
-Farmer,510e59c6-d220-458b-91c4-f5a5d00f687c,Luke,jedi,theChosenOne@jedi.com,Skywalker Farm,Tatooine

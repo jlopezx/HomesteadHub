@@ -11,7 +11,7 @@ import java.util.List;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose This interface sets the rules for all data persistence operations.
  * 
@@ -92,7 +92,8 @@ public interface DataRepository
 	List<Product> findAllProducts(Farmer farmer);
 
 	/**
-	 * Purpose:  Retrieves ALL Products
+	 * Purpose: Retrieves ALL Products
+	 * 
 	 * @return A list containing all products on platform
 	 */
 	List<Product> findAllProducts();
@@ -129,4 +130,29 @@ public interface DataRepository
 	 * @return A list of orders placed by the customer.
 	 */
 	List<Order> findOrdersByCustomer(Customer customer);
+
+	// ------LineItem Operations------
+	/**
+	 * Purpose: Individually saves line items into a list.
+	 * 
+	 * @param order    Order associated with line item.
+	 * @param lineItem Line item to serialize.
+	 * @return LineItem object if successful; null otherwise.
+	 */
+	LineItem saveLineItem(Order order, LineItem lineItem);
+
+	/**
+	 * Purpose: Retrieves all LineItem orders made to the Farmer.
+	 * 
+	 * @param farmer Farmer object to find line items.
+	 * @return List of LineItems associated with farmer.
+	 */
+	List<LineItem> findOrdersToFarmer(Farmer farmer);
+
+	/**
+	 * Purpose: Retirieve all line items.
+	 * 
+	 * @return List of ALL line items.
+	 */
+	List<LineItem> findLineItems();
 }

@@ -1,7 +1,7 @@
 package edu.sdmesa.homesteadhub;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-5
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of InventoryManager is to manage the entire
  *          Product catalog and inventory levels.
@@ -29,7 +29,7 @@ public class InventoryManager
 	 */
 	public InventoryManager()
 	{
-		this.productCatalog = new HashMap<>();
+		this.productCatalog = new LinkedHashMap<>();
 	}
 
 	/**

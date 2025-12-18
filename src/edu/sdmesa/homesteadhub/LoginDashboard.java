@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of LoginDashboard is to provide a starting point
  *          for the application and allows the user to login.
@@ -25,11 +25,7 @@ import javafx.stage.Stage;
  */
 public class LoginDashboard extends Application
 {
-
-	// TODO: replace portalManager's initialization with an AppInitializer for
-	// final construction
-	private PortalManager portalManager = new PortalManager(
-			Tester.getRepository());
+	private PortalManager portalManager = AppInitializer.getPortalManager();
 	private User loggedInUser = null;
 
 	// UI Components
@@ -54,6 +50,7 @@ public class LoginDashboard extends Application
 		this.loginScene = createLoginScene();
 
 		this.primaryStage.setScene(loginScene);
+		this.primaryStage.centerOnScreen();
 		this.primaryStage.show();
 	}
 

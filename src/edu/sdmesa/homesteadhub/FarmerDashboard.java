@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -23,7 +24,7 @@ import java.net.URL;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose Main JavaFX application for the Farmer Dashboard GUI.
  *          This class implements the two main views: Product Inventory and
@@ -31,6 +32,20 @@ import java.net.URL;
  */
 public class FarmerDashboard extends Dashboard
 {
+	private Farmer farmer;
+	private Stage primaryStage;
+	private String imagePath;
+
+	private StackPane newImage;
+
+	// Container for Farmer/Supplier products
+	private ObservableList<Product> products = null;
+
+	// Sidebar buttons creation
+	List<SidebarButtonConfig> farmerNavButtons = Arrays.asList(
+			new SidebarButtonConfig("Product Inventory", "inventory", true),
+			new SidebarButtonConfig("Orders", "orders", false));
+
 	/**
 	 * Purpose: Constructor to initialize Dashboard's essential field variables
 	 * 
@@ -41,23 +56,9 @@ public class FarmerDashboard extends Dashboard
 	FarmerDashboard(Stage primaryStage, Scene loginScene, User loggedInUser)
 	{
 		super(primaryStage, loginScene, loggedInUser);
+
+		this.primaryStage = primaryStage;
 	}
-
-	// Container for Farmer/Supplier products
-	private ObservableList<Product> products = null;
-
-	// Data we can pull from orders data based on the farmer
-	private final List<LineItem> mockOrderItems = Arrays.asList(
-			new LineItem("3512", "Heirloom Pumpkins", 20, 6.00, 120.00),
-			new LineItem("9876", "Compost Soil", 5, 30.00, 150.00),
-			new LineItem("2123", "Eggs (Free Range)", 15, 7.00, 105.00),
-			new LineItem("5129", "Apples (Fuji)", 15, 8.00, 120.00),
-			new LineItem("1234", "Microgreens Mix", 25, 8.00, 200.00));
-
-	// Sidebar buttons creation
-	List<SidebarButtonConfig> farmerNavButtons = Arrays.asList(
-			new SidebarButtonConfig("Product Inventory", "inventory", true),
-			new SidebarButtonConfig("Orders", "orders", false));
 
 	public void startDashboard(Stage primaryStage, Scene loginScene, User user)
 	{
@@ -71,11 +72,7 @@ public class FarmerDashboard extends Dashboard
 		}
 
 		// Now we can safely cast the generic User object to a Farmer object
-		Farmer farmer = (Farmer) user;
-
-		// Initialize farmer's products with saved products
-		products = FXCollections.observableArrayList(
-				Tester.getRepository().findAllProducts(farmer));
+		this.farmer = (Farmer) user;
 
 		// Root Layout as a BorderPane
 		BorderPane root = new BorderPane();
@@ -106,6 +103,8 @@ public class FarmerDashboard extends Dashboard
 		// Launch the Farmer Dashboard scene
 		primaryStage.setTitle("Farmer Dashboard");
 		primaryStage.setScene(scene);
+		primaryStage.sizeToScene();
+		primaryStage.centerOnScreen();
 		primaryStage.show();
 	}
 
@@ -125,8 +124,11 @@ public class FarmerDashboard extends Dashboard
 		// --- Table View Setup ---
 		TableView<Product> table = new TableView<>();
 
-		// TODO: pull products from class. Create and use data from
-		// AppInitializer after testing
+		// Initialize farmer's products with saved products
+		products = FXCollections.observableArrayList(
+				AppInitializer.getRepository().findAllProducts(farmer));
+
+		// Populates the table with product data
 		table.setItems(products);
 		table.getStyleClass().add("product-table");
 
@@ -139,16 +141,6 @@ public class FarmerDashboard extends Dashboard
 		TableColumn<Product, String> productCol = new TableColumn<>("Product");
 		productCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 		productCol.setPrefWidth(150);
-
-		// TODO: Photo column placeholder since no photo system has been
-		// implemented yet
-		// --------- Photo Column ---------
-		TableColumn<Product, String> photoCol = new TableColumn<>("");
-		photoCol.setCellValueFactory(new PropertyValueFactory<>("photoUrl"));
-		photoCol.setCellFactory(column -> new TableCell<Product, String>()
-		{// TODO: Complete the lambda function for the photo once implemented
-		});
-		photoCol.setPrefWidth(100);
 
 		// --------- Description Column ---------
 		TableColumn<Product, String> descCol = new TableColumn<>("Description");
@@ -192,7 +184,6 @@ public class FarmerDashboard extends Dashboard
 			}
 		});
 
-		// TODO: add photoCol when implemented
 		// Build table with inventory columns
 		table.getColumns().addAll(skuCol, productCol, descCol, priceCol);
 
@@ -235,6 +226,29 @@ public class FarmerDashboard extends Dashboard
 		formGrid.setVgap(15);
 		formGrid.setAlignment(Pos.CENTER);
 
+		GridPane priceGrid = new GridPane();
+		priceGrid.setHgap(20);
+		priceGrid.setVgap(15);
+		priceGrid.setAlignment(Pos.CENTER);
+
+		// Constraint for field's title label columns (Col 0)
+		ColumnConstraints labelColConstraint = new ColumnConstraints();
+		// Labels only take the space they need
+		labelColConstraint.setHgrow(Priority.NEVER);
+		labelColConstraint.setMinWidth(60);
+
+		// Constraint for price and qty input fields column (Col 1)
+		ColumnConstraints fieldConstraint = new ColumnConstraints();
+
+		// Set a fixed max width and prevent growth
+		fieldConstraint.setMinWidth(80);
+		fieldConstraint.setMaxWidth(120);
+		fieldConstraint.setHgrow(Priority.ALWAYS);
+
+		// Apply constraints in order
+		priceGrid.getColumnConstraints().addAll(labelColConstraint,
+				fieldConstraint);
+
 		// --------- Input Fields ---------
 
 		// --Title Input--
@@ -242,22 +256,34 @@ public class FarmerDashboard extends Dashboard
 		TextField titleField = new TextField();
 		titleField.setPromptText("e.g., Organic Honey");
 		titleField.getStyleClass().add("form-input");
-		formGrid.add(titleField, 1, 0);
+		formGrid.add(titleField, 1, 0, 3, 1);
 
+		// -----Inner Grid------
 		// --Price Input--
-		formGrid.add(new Label("Price ($)"), 0, 1);
+		priceGrid.add(new Label("Price ($)"), 0, 0);
 		TextField priceField = new TextField();
 		priceField.setPromptText("0.00");
 		priceField.getStyleClass().add("form-input");
-		formGrid.add(priceField, 1, 1);
+		priceGrid.add(priceField, 1, 0);
+
+		// --Quantity Input--
+		priceGrid.add(new Label("Quantity   "), 0, 1);
+		TextField quantityField = new TextField();
+		quantityField.setPromptText("0");
+		quantityField.getStyleClass().add("form-input");
+		priceGrid.add(quantityField, 1, 1);
+		// -----Inner Grid End------
+
+		// Place inner grid inside outer grid
+		formGrid.add(priceGrid, 0, 1, 3, 2);
 
 		// --Description Input--
-		formGrid.add(new Label("Description"), 0, 2);
+		formGrid.add(new Label("Description"), 0, 3);
 		TextArea descriptionArea = new TextArea();
 		descriptionArea.setPromptText("Description...");
 		descriptionArea.setWrapText(true);
 		descriptionArea.getStyleClass().add("form-textarea");
-		formGrid.add(descriptionArea, 1, 2, 1, 2);
+		formGrid.add(descriptionArea, 1, 3, 3, 2);
 
 		// --------- Picture Placeholder ---------
 		VBox pictureBox = new VBox(5);
@@ -265,17 +291,75 @@ public class FarmerDashboard extends Dashboard
 		Label picLabel = new Label("Picture");
 		picLabel.getStyleClass().add("form-label");
 
-		StackPane imagePlaceholder = new StackPane(new Label("🖼"));
-		imagePlaceholder.getStyleClass().add("image-placeholder");
+		StackPane defaultImage = new StackPane(new Label("🖼"));
+		defaultImage.getStyleClass().add("image-placeholder");
 
-		pictureBox.getChildren().addAll(picLabel, imagePlaceholder);
-		formGrid.add(pictureBox, 2, 0, 1, 3);
+		pictureBox.getChildren().addAll(picLabel, defaultImage);
+		pictureBox.setOnMouseClicked(e -> {
+			// Calls uploadImage method and returns image file path if
+			// successful, null otherwise
+			imagePath = uploadImage(primaryStage);
+			if (imagePath != null)
+			{
+				// Successful confirmation message
+				System.out.println("Image successfully saved to workspace.");
+				ImageView productImageView = new ImageView();
+				productImageView.setFitWidth(150);
+				productImageView.setFitHeight(150);
+				productImageView.setPreserveRatio(true);
+
+				// Checks if there's a photoUrl, if true, will set
+				// productImageView with
+				// product photo, otherwise it will place the default
+				// placeholder
+				renderImage(productImageView, imagePath);
+
+				// Removes default place holder from picturebox
+				pictureBox.getChildren().remove(defaultImage);
+				pictureBox.getChildren().remove(newImage);
+
+				// Add new product image to stackpane
+				newImage = new StackPane(productImageView);
+
+				// Dynamically adds new image to picturebox
+				pictureBox.getChildren().add(newImage);
+			}
+			else
+			{
+				// Failed image operation message
+				System.err.println(
+						"Operation cancelled or failed to select file.");
+			}
+		});
+		formGrid.add(pictureBox, 4, 0, 1, 3);
 
 		// --------- Save Button ---------
 		Button saveButton = new Button("SAVE ITEM");
 		saveButton.getStyleClass().add("save-button");
 		saveButton.setOnAction(e -> {
 			System.out.println("Saving Item: " + titleField.getText());
+
+			// Create new Product object
+			Product newProduct = new Product(titleField.getText(),
+					Integer.parseInt(quantityField.getText()), farmer,
+					Double.parseDouble(priceField.getText()),
+					descriptionArea.getText());
+
+			// Saved photoUrl if set. This makes photo optional as it's not
+			// needed by any constructor.
+			if (imagePath != null)
+			{
+				newProduct.setPhotoUri(imagePath);
+			}
+			else
+			{
+				System.err.println("FARMERDASHBOARD: imagePath is null");
+			}
+
+			// Saves product to files and adds to inventory manager's catalog
+			AppInitializer.getRepository().saveProduct(newProduct);
+			AppInitializer.getInventoryManager().addProduct(newProduct);
+
 			// After save, switch back to inventory view
 			switchToView("inventory");
 		});
@@ -303,16 +387,11 @@ public class FarmerDashboard extends Dashboard
 		title.getStyleClass().add("view-title");
 		VBox.setMargin(title, new Insets(0, 0, 10, 0));
 
-		// TODO: need to add a findByFarmer() that will find based on orders
-		// based on farmers only. There can be multiple farmers that a customer
-		// buys from so I have to find a way to serialize the orders made to
-		// each specific farmer/supplier based on a customer order.
-		// List<Order> orders =
-		// Tester.getRepository().findOrdersByCustomer(customer);
-
 		// --------- Order Items Table ---------
-		TableView<LineItem> itemTable = createLineItemTable(false);
-		itemTable.setItems(FXCollections.observableArrayList(mockOrderItems));
+		TableView<LineItem> itemTable = createOrderTable();
+		// Pulls order data from the data repository based on the farmer
+		itemTable.setItems(FXCollections.observableArrayList(
+				AppInitializer.getRepository().findOrdersToFarmer(farmer)));
 
 		ordersLayout.getChildren().addAll(title, itemTable);
 

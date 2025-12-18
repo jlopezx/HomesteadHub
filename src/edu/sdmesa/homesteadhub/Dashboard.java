@@ -1,8 +1,15 @@
 package edu.sdmesa.homesteadhub;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,6 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -23,6 +32,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -34,7 +44,7 @@ import javafx.stage.Stage;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The Dashboard class acts as the abstract base for user-specific
  *          portals.It provides the main structure and navigation for these
@@ -68,6 +78,18 @@ public abstract class Dashboard
 
 	// Provides access to dynamically created toggle buttons
 	private Map<String, ToggleButton> navButtonsMap = new HashMap<>();
+
+	// Define the base directory for all application data/assets.
+	private static final String ASSET_DIR_NAME = "app_assets";
+	private static final String IMAGE_SUB_DIR_NAME = "images";
+
+	// Defines folder path for product images
+	private final Path imagesDirPath = Paths.get(ASSET_DIR_NAME,
+			IMAGE_SUB_DIR_NAME);
+
+	// Both used to help with product image display and replacement
+	private ImageView productImageView;
+	private StackPane imagePlaceholder;
 
 	Dashboard(Stage primaryStage, Scene loginScene, User loggedInUser)
 	{
@@ -320,13 +342,23 @@ public abstract class Dashboard
 		card.getStyleClass().add("product-card");
 		card.setAlignment(Pos.CENTER);
 
+		// Event clicker for product card
 		card.setOnMouseClicked(event -> {
+			// Switches to specific product page view
 			switchToView("productPage", product);
 		});
+		productImageView = new ImageView();
+		productImageView.setFitWidth(150);
+		productImageView.setFitHeight(150);
+		productImageView.setPreserveRatio(true);
 
-		// Placeholder for Image (use a Label for simplicity)
-		Label imagePlaceholder = new Label("🖼");
-		imagePlaceholder.setStyle("-fx-font-size: 60px;");
+		// Checks if there's a photoUri, if true, will set productImageView with
+		// product photo, otherwise it will place the default placeholder
+		renderImage(productImageView, product.getPhotoUri());
+
+		// Initialize image StackPane with image
+		imagePlaceholder = new StackPane(productImageView);
+		imagePlaceholder.getStyleClass().add("image-placeholder");
 
 		// Product Name
 		Label nameLabel = new Label(product.getTitle());
@@ -359,7 +391,7 @@ public abstract class Dashboard
 	/**
 	 * Purpose:Placeholder for a single product page view.
 	 * 
-	 * @return productPageLayout
+	 * @return productPageLayout The entirely created product page view
 	 */
 	protected Region createProductPageView(Product product)
 	{
@@ -370,8 +402,26 @@ public abstract class Dashboard
 		Label title = new Label(product.getTitle() + " Details");
 		title.getStyleClass().add("view-title");
 
+		// Initialize product image view
+		productImageView = new ImageView();
+		productImageView.setFitWidth(150);
+		productImageView.setFitHeight(150);
+		productImageView.setPreserveRatio(true);
+
+		// Checks if there's a photoUri, if true, will set productImageView with
+		// product photo, otherwise it will place the default placeholder
+		renderImage(productImageView, product.getPhotoUri());
+
+		// Initialize image StackPane with image
+		imagePlaceholder = new StackPane(productImageView);
+		imagePlaceholder.getStyleClass().add("image-placeholder");
+		imagePlaceholder.setMaxWidth(200);
+
+		// Creates price label and formats it with product's price
 		Label price = new Label(
 				"Price: " + String.format("$%.2f", product.getUnitPrice()));
+
+		// Creates descriptions label and adds products description to it
 		Label description = new Label(
 				"Description: " + product.getDescription());
 
@@ -382,8 +432,8 @@ public abstract class Dashboard
 			switchToView("catalog");
 		});
 
-		productPageLayout.getChildren().addAll(title, price, description,
-				backButton);
+		productPageLayout.getChildren().addAll(title, imagePlaceholder, price,
+				description, backButton);
 
 		return productPageLayout;
 	}
@@ -402,13 +452,13 @@ public abstract class Dashboard
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 		// --------- Defining Columns ---------
-		// Title Column
+		// --Title Column--
 		TableColumn<LineItem, String> itemProductCol = new TableColumn<>(
 				"Product");
 		itemProductCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 		itemProductCol.setPrefWidth(200);
 
-		// Item Quantity Column
+		// --Item Quantity Column--
 		TableColumn<LineItem, Integer> itemQuantityCol = new TableColumn<>(
 				"Quantity");
 		itemQuantityCol
@@ -430,7 +480,7 @@ public abstract class Dashboard
 			itemQuantityCol.setPrefWidth(80);
 		}
 
-		// Unit Price Column
+		// --Unit Price Column--
 		TableColumn<LineItem, Double> itemUnitPriceCol = new TableColumn<>(
 				"Unit Price");
 		itemUnitPriceCol
@@ -439,7 +489,7 @@ public abstract class Dashboard
 		// Formats cell with formatCurrencyCell()
 		itemUnitPriceCol.setCellFactory(column -> formatCurrencyCell());
 
-		// Total Column
+		// --Total Column--
 		TableColumn<LineItem, Double> itemTotalCol = new TableColumn<>("Total");
 		itemTotalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
 		itemTotalCol.setStyle("-fx-alignment: CENTER-RIGHT;");
@@ -450,6 +500,86 @@ public abstract class Dashboard
 		// Add all columns to the table
 		table.getColumns().addAll(itemProductCol, itemQuantityCol,
 				itemUnitPriceCol, itemTotalCol);
+
+		// Allow table to grow vertically within its container
+		VBox.setVgrow(table, Priority.ALWAYS);
+
+		return table;
+	}
+
+	/**
+	 * Purpose: Helper function to create a TableView with LineItem columns.
+	 * 
+	 * @return table TableView with LineItem columns
+	 */
+	protected TableView<LineItem> createOrderTable()
+	{
+		TableView<LineItem> table = new TableView<>();
+		table.getStyleClass().add("order-table");
+		// Helps columns fill the width of the table
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+		// --------- Defining Columns ---------
+		// --Order ID column--
+		TableColumn<LineItem, String> itemOrderIdCol = new TableColumn<>(
+				"Order ID");
+		itemOrderIdCol
+				.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+		itemOrderIdCol.setPrefWidth(200);
+
+		// --SKU Column--
+		TableColumn<LineItem, String> itemSkuCol = new TableColumn<>("SKU");
+		itemSkuCol.setCellValueFactory(new PropertyValueFactory<>("sku"));
+		itemSkuCol.setPrefWidth(200);
+
+		// --Title Column--
+		TableColumn<LineItem, String> itemProductCol = new TableColumn<>(
+				"Product Title");
+		itemProductCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+		itemProductCol.setPrefWidth(200);
+
+		// --Item Quantity Column--
+		TableColumn<LineItem, Integer> itemQuantityCol = new TableColumn<>(
+				"Quantity");
+		itemQuantityCol
+				.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		itemQuantityCol.setStyle("-fx-alignment: CENTER;");
+		// Standard width for read-only table
+		itemQuantityCol.setPrefWidth(80);
+
+		// --Unit Price Column--
+		TableColumn<LineItem, Double> itemUnitPriceCol = new TableColumn<>(
+				"Unit Price");
+		itemUnitPriceCol
+				.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+		itemUnitPriceCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+		// Formats cell with formatCurrencyCell()
+		itemUnitPriceCol.setCellFactory(column -> formatCurrencyCell());
+
+		// --Total Column--
+		TableColumn<LineItem, Double> itemTotalCol = new TableColumn<>("Total");
+		itemTotalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
+		itemTotalCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+		// Formats cell with formatCurrencyCell()
+		itemTotalCol.setCellFactory(column -> formatCurrencyCell());
+
+		// --Customer Column--
+		TableColumn<LineItem, String> itemCustomerCol = new TableColumn<>(
+				"Customer");
+		itemCustomerCol
+				.setCellValueFactory(new PropertyValueFactory<>("customer"));
+		itemCustomerCol.setPrefWidth(200);
+
+		// --Farmer Column--
+		TableColumn<LineItem, String> itemFarmerCol = new TableColumn<>(
+				"Farmer");
+		itemFarmerCol.setCellValueFactory(new PropertyValueFactory<>("farmer"));
+		itemFarmerCol.setPrefWidth(200);
+
+		// Add all columns to the table
+		table.getColumns().addAll(itemOrderIdCol, itemSkuCol, itemProductCol,
+				itemQuantityCol, itemUnitPriceCol, itemTotalCol,
+				itemCustomerCol, itemFarmerCol);
 
 		// Allow table to grow vertically within its container
 		VBox.setVgrow(table, Priority.ALWAYS);
@@ -605,8 +735,9 @@ public abstract class Dashboard
 	 * Prupose: Creates the left-hand navigation sidebar with menu items and the
 	 * Logout button.
 	 * 
-	 * @param labelName
-	 * @param buttonConfigs
+	 * @param labelName     Name of the page sidebar belongs
+	 * @param buttonConfigs List of button configurations. Allows for
+	 *                      dynamically created buttons.
 	 * @return sidebar VBox with appropriate elements
 	 */
 	protected VBox createSidebar(String labelName,
@@ -758,7 +889,7 @@ public abstract class Dashboard
 	}
 
 	/**
-	 * Purpose: Abstract method used for children's scene switching
+	 * Purpose: Abstract method used for children's scene switching.
 	 * 
 	 * @param viewId Scene's view ID
 	 * @return Entirely created scene
@@ -766,10 +897,10 @@ public abstract class Dashboard
 	protected abstract Region createSpecificView(String viewId);
 
 	/**
-	 * Purpose: Abstract method for product page view
+	 * Purpose: Abstract method for product page view scene switching.
 	 * 
-	 * @param viewId
-	 * @param product
+	 * @param viewId  Scene's view ID
+	 * @param product Product object to view for product page view
 	 * @return Entirely created scene
 	 */
 	protected abstract Region createSpecificView(String viewId,
@@ -792,6 +923,134 @@ public abstract class Dashboard
 		{
 			System.err.println(
 					"Navigation button not found for view ID: " + viewId);
+		}
+	}
+
+	/**
+	 * Purpose: Handles opening the FileChooser, copying the file, and returning
+	 * the path.
+	 * 
+	 * @param stage The JavaFX Stage required to launch the FileChooser.
+	 * @return The path string or null if cancelled/failed.
+	 */
+	protected String uploadImage(Stage stage)
+	{
+		try
+		{
+			// Checks if the destination directory exists
+			Files.createDirectories(imagesDirPath);
+
+			// Open File Chooser
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Select Product Image");
+
+			// Add filters to check that only image files can be selected
+			FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter(
+					"Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif");
+			fileChooser.getExtensionFilters().add(imageFilter);
+
+			// Allows user to upload file through their system and assigns to
+			// local File variable for later use
+			File selectedFile = fileChooser.showOpenDialog(stage);
+
+			if (selectedFile != null)
+			{
+				// Define the destination file name
+				String originalFileName = selectedFile.getName();
+				String fileExtension = "";
+				int dotIndex = originalFileName.lastIndexOf('.');
+				if (dotIndex > 0)
+				{
+					fileExtension = originalFileName.substring(dotIndex);
+				}
+
+				// Use a UUID for a unique filename
+				String uniqueFileName = UUID.randomUUID().toString()
+						+ fileExtension;
+
+				// Construct the full destination path
+				Path destinationPath = imagesDirPath.resolve(uniqueFileName);
+
+				// Copy the file, replace names match (unlikely though)
+				Files.copy(selectedFile.toPath(), destinationPath,
+						StandardCopyOption.REPLACE_EXISTING);
+
+				// Returns the path for the product image
+				return imagesDirPath.resolve(uniqueFileName).toString();
+
+			}
+			else
+			{
+				// If here, then the image upload operation was cancelled
+				return null;
+			}
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Error processing image file: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Purpose: Uploads and places product image to desired view. Places default
+	 * placeholder if product image is null.
+	 * 
+	 * @param imageView The view in which to modify with the default image.
+	 * @param imagePath The image's file path.
+	 */
+	protected void renderImage(ImageView imageView, String imagePath)
+	{
+		try
+		{
+			// Create a File object from the string path
+			File file = new File(imagePath);
+
+			// Convert the file to a URI sring
+			String imageUrl = file.toURI().toURL().toString();
+
+			// Create the Image
+			Image image = new Image(imageUrl, true);
+
+			// Update the display
+			imageView.setImage(image);
+		}
+		catch (Exception e)
+		{
+			// If here, there's an issue with the image, most likely null
+			System.err.println("DASHBOARD: image is " + e.getMessage());
+			// Notifys the system we're loading the placeholder image instead
+			System.err.println("loading placeholder...");
+			// Loads placeholder image
+			loadPlaceholder(imageView);
+		}
+	}
+
+	/**
+	 * Purpose: Loads deafult placeholder image if product image is null. Images
+	 * are not required for products
+	 * 
+	 * @param imageView The view in which to modify with the default image.
+	 */
+	protected void loadPlaceholder(ImageView imageView)
+	{
+		try
+		{
+			// Defines the placeholder path and make it unchangeable
+			final String placeholderPath = "app_assets/images/img-placeholder.png";
+			File placeholderFile = new File(placeholderPath);
+
+			// Adds the default placeholder image
+			imageView.setImage(
+					new Image(placeholderFile.toURI().toString(), true));
+
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error loading placeholder: " + e.getMessage());
+			imageView.setImage(null);
 		}
 	}
 
@@ -828,7 +1087,7 @@ public abstract class Dashboard
 	/**
 	 * Purpose: Returns tax rate defined in class
 	 * 
-	 * @return taxRate
+	 * @return taxRate Defined tax rate in fields
 	 */
 	protected double getTaxRate()
 	{
@@ -851,5 +1110,4 @@ public abstract class Dashboard
 		primaryStage.setHeight(350);
 		primaryStage.centerOnScreen();
 	}
-
 }

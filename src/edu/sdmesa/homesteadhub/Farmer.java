@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-11-21
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of Farmer is to represents a Farmer in the
  *          HomesteadHub system.
@@ -64,18 +64,6 @@ public class Farmer extends User
 		this.farmName = farmName;
 		this.location = location;
 		this.offeredProducts = new ArrayList<>();
-	}
-
-	/**
-	 * Method placeholder to represent the farmer changing an order status.
-	 * 
-	 * @param order The order to be processed.
-	 */
-	public void processOrder(Order order)
-	{
-		// TODO: Implement rest of logic when OrderManager is created
-		System.out.println("Farmer " + getUsername() + " processing order: "
-				+ order.getOrderId());
 	}
 
 	/**

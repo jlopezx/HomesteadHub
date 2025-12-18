@@ -1,2 +1,4 @@
-SIMPLE,0a9132fe-062f-4163-855a-65dca2f57ddf,Carrots,null,50,3.99,Luke
-SIMPLE,APPLE1,Apples,Gala Apples (5lb),100,9.99,Luke
+SIMPLE,b7c07d58-da89-4f15-8258-68a66c7816c1,Honey,Wildflower Honey,20,8.99,Luke
+SIMPLE,b8c69ade-0a80-4ccb-990e-7e75d5c180d7,Microgreens,Nutritional Microgreens,20,8.99,Luke
+SIMPLE,ee3d34be-89cd-4b05-b45a-f9092bd3d7a6,Carrots,Hearty Carrots,20,3.99,Luke
+SIMPLE,b4863d3e-d17d-4fc0-a270-c55714de2b20,Oranges,Sweet oranges,20,5.99,Luke

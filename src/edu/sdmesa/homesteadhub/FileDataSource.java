@@ -16,7 +16,7 @@ import java.util.Scanner;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of FileDataSource is Concrete implementation of
  *          DataRepository that persists data to local text files.
@@ -30,6 +30,7 @@ public class FileDataSource implements DataRepository
 	private static final String USERS_FILE = "users.txt";
 	private static final String PRODUCTS_FILE = "products.txt";
 	private static final String ORDERS_FILE = "orders.txt";
+	private static final String LINE_ITEM_FILE = "lineitems.txt";
 
 	private Helper helper = new Helper();
 
@@ -44,6 +45,7 @@ public class FileDataSource implements DataRepository
 			new File(USERS_FILE).toPath().toFile().createNewFile();
 			new File(PRODUCTS_FILE).toPath().toFile().createNewFile();
 			new File(ORDERS_FILE).toPath().toFile().createNewFile();
+			new File(LINE_ITEM_FILE).toPath().toFile().createNewFile();
 		}
 		catch (IOException e)
 		{
@@ -339,4 +341,89 @@ public class FileDataSource implements DataRepository
 		}
 		return orders;
 	}
+
+	/**
+	 * Purpose: Individually saves line items into a list.
+	 * 
+	 * @param order    Order associated with line item.
+	 * @param lineItem Line item to serialize.
+	 * @return LineItem object if successful; null otherwise.
+	 */
+	@Override
+	public LineItem saveLineItem(Order order, LineItem lineItem)
+	{
+		// Updated file access
+		try (FileWriter writer = new FileWriter(LINE_ITEM_FILE, true))
+		{
+			writer.write(helper.serializeLineItem(order, lineItem) + "\n");
+		}
+		catch (IOException e)
+		{
+			System.err.println(
+					"Error saving Line Item to file: " + e.getMessage());
+		}
+		return lineItem;
+	}
+
+	/**
+	 * Purpose: Retrieves all LineItem orders made to the Farmer.
+	 * 
+	 * @param farmer Farmer object to find line items.
+	 * @return List of LineItems associated with farmer.
+	 */
+	@Override
+	public List<LineItem> findOrdersToFarmer(Farmer farmer)
+	{
+		List<LineItem> lineItems = new ArrayList<>();
+		for (LineItem lineItem : findLineItems())
+		{
+			if (lineItem.getFarmer().equals(farmer.getUsername()))
+			{
+				lineItems.add(lineItem);
+			}
+		}
+
+		if (!lineItems.isEmpty())
+		{
+			return lineItems;
+		}
+		System.err.println(
+				"FILEDATESOURCE (findOrdersToFarmer): Returning null...");
+		return null;
+
+	}
+
+	/**
+	 * Purpose: Retirieve all line items.
+	 * 
+	 * @return List of ALL line items.
+	 */
+	@Override
+	public List<LineItem> findLineItems()
+	{
+		// Simpler implementation: Find all and filter.
+		List<LineItem> lineItems = new ArrayList<>();
+
+		// Updated file access
+		try (Scanner scanner = new Scanner(new File(LINE_ITEM_FILE)))
+		{
+			while (scanner.hasNextLine())
+			{
+				String line = scanner.nextLine();
+				// We use the simpler deserializeOrder helper
+				LineItem lineItem = helper.deserializeLineItem(line);
+				if (lineItem != null)
+				{
+					lineItems.add(lineItem);
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			System.err
+					.println("Error reading lineitems file: " + e.getMessage());
+		}
+		return lineItems;
+	}
+
 }

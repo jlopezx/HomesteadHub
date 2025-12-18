@@ -7,7 +7,7 @@ This document centralizes all external references and sources used for this proj
 ## Lead Author and Version
 
 * **Lead Author(s):** Joshua Lopez
-* **Version:** 2025-12-5
+* **Version:** 2025-12-12
 
 ---
 
@@ -97,3 +97,17 @@ This document centralizes all external references and sources used for this proj
 28. **PragmaticCoding.** (2022). *Observable Listeners in JavaFX.*
 [https://www.pragmaticcoding.ca/javafx/elements/listeners](https://www.pragmaticcoding.ca/javafx/elements/listeners)
 
+29. **Stack Overflow.** (2014). *JavaFX GridPane fixed columns and rows.*
+[https://stackoverflow.com/questions/22792880/javafx-gridpane-fixed-columns-and-rows](https://stackoverflow.com/questions/22792880/javafx-gridpane-fixed-columns-and-rows)
+
+30. **Oracle.** (2015). *Class ColumnConstraints (Java Platform SE 8).*
+[https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/ColumnConstraints.html](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/ColumnConstraints.html)
+
+31. **Alexander Obregon.** (2023). *Java’s Files.createDirectories() Method Explained.*
+[https://medium.com/@AlexanderObregon/javas-files-createdirectories-method-explained-cb824678b0b7](https://medium.com/@AlexanderObregon/javas-files-createdirectories-method-explained-cb824678b0b7)
+
+32. **Oracle.** (2021). *How to Use File Choosers.*
+[https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html](https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html)
+
+33. **Stack Overflow.** (2012). *JavaFX FileChooser and DirectoryChooser.*
+[https://stackoverflow.com/questions/9375938/javafx-filechooser-and-directorychooser](https://stackoverflow.com/questions/9375938/javafx-filechooser-and-directorychooser)

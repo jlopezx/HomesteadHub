@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose The reponsibility of CustomerDashboard is to provide a
  *          UI experience for a customer, allowing them to browse products,
@@ -70,6 +70,7 @@ public class CustomerDashboard extends Dashboard
 	 */
 	public void startDashboard(Stage primaryStage, Scene loginScene, User user)
 	{
+
 		customer = (Customer) user;
 		// Root Layout as a BorderPane
 		BorderPane root = new BorderPane();
@@ -100,6 +101,8 @@ public class CustomerDashboard extends Dashboard
 		// Launch the Customer Dashboard scene
 		primaryStage.setTitle("Customer Dashboard");
 		primaryStage.setScene(scene);
+		primaryStage.sizeToScene();
+		primaryStage.centerOnScreen();
 		primaryStage.show();
 	}
 
@@ -123,9 +126,11 @@ public class CustomerDashboard extends Dashboard
 		grid.setVgap(20);
 		grid.setPadding(new Insets(20));
 
-		List<Product> products = new ArrayList<>(
-				Tester.getInventoryManager().getProductCatalog().values());
+		// Pulls product catalog items from Inventory manager's map values
+		List<Product> products = new ArrayList<>(AppInitializer
+				.getInventoryManager().getProductCatalog().values());
 
+		// List to hold all product cards used in the catalog
 		List<Region> productCards = new ArrayList<>();
 
 		// Creates product cards for products inside products.txt
@@ -153,6 +158,7 @@ public class CustomerDashboard extends Dashboard
 		}
 
 		grid.getStyleClass().add("catalog-grid");
+		grid.setAlignment(Pos.CENTER);
 
 		// Table takes up available vertical space
 		VBox.setVgrow(grid, Priority.ALWAYS);
@@ -178,11 +184,13 @@ public class CustomerDashboard extends Dashboard
 		title.getStyleClass().add("view-title");
 		VBox.setMargin(title, new Insets(0, 0, 10, 0));
 
-		List<Order> orders = Tester.getRepository()
+		// Pulls customer's orders from data repository
+		List<Order> orders = AppInitializer.getRepository()
 				.findOrdersByCustomer(customer);
 
 		// --------- Order Items Table ---------
 		TableView<Order> itemTable = createOrdersTable();
+		// Populates table with orders made
 		itemTable.setItems(FXCollections.observableArrayList(orders));
 
 		ordersLayout.getChildren().addAll(title, itemTable);
@@ -299,7 +307,6 @@ public class CustomerDashboard extends Dashboard
 		// Sets action handler for placing order
 		placeOrderButton.setOnAction(e -> {
 			// Pulls cart data to retrieve grand total
-			// TODO: Most likely can avoid this call
 			ObservableList<LineItem> items = getCartTable().getItems();
 			// Calculate totals based on the current items
 			double subtotal = items.stream().mapToDouble(LineItem::getTotal)
@@ -314,7 +321,8 @@ public class CustomerDashboard extends Dashboard
 					payList.getProcessor(selectedMethod), customer);
 
 			// Creates order manager to prep order placement
-			orderManager = new OrderManager(Tester.getInventoryManager(),
+			orderManager = new OrderManager(
+					AppInitializer.getInventoryManager(),
 					detail.getPaymentMethod());
 
 			// Handles order placement
@@ -330,9 +338,8 @@ public class CustomerDashboard extends Dashboard
 			}
 			catch (InsufficientStockException e1)
 			{
-				System.err.println(
-						"FAIL: Successful order threw unexpected exception: "
-								+ e1.getMessage());
+				System.err.println("FAIL: Order threw unexpected exception: "
+						+ e1.getMessage());
 			}
 
 		});
@@ -369,7 +376,7 @@ public class CustomerDashboard extends Dashboard
 		orderTitle.setStyle(
 				"-fx-text-fill: " + darkColor + "; -fx-font-size: 30px;");
 
-		// TODO: Populate with real Order ID number (transactionId)
+		// Thank you confirmation with order ID
 		Label thankYou = new Label("Order ID: " + newOrder.getOrderId());
 		thankYou.setStyle("-fx-font-size: 20px; -fx-text-fill: #777777;");
 

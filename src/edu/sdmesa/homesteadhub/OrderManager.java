@@ -12,7 +12,7 @@ import java.util.Map;
  *         All detailed citations are located in the central REFERENCES.md
  *         file at the project root.
  * 
- * @version 2025-12-12
+ * @version 2025-12-18
  * 
  * @Purpose Manages the business logic for placing an order,
  *          coordinating inventory management and payment processing.
@@ -105,8 +105,12 @@ public class OrderManager
 				subtotal, customer.getShippingAddress(), result);
 
 		// Saves order to repository
-		// TODO: Need to change this
-		Tester.getRepository().saveOrder(newOrder);
+		AppInitializer.getRepository().saveOrder(newOrder);
+		for (LineItem item : newOrder.getItems())
+		{
+			AppInitializer.getRepository().saveLineItem(newOrder, item);
+		}
+
 		System.out.println("ORDER MANAGER: Order saved");
 
 		System.out.printf(
